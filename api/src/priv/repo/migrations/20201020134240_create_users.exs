@@ -5,7 +5,7 @@ defmodule Src.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :username, :string
       add :email, :string
-      add :role, :integer, default: 0
+      add :role, references(:roles, on_delete: :nothing), default: 1
 
       timestamps()
     end
