@@ -39,20 +39,20 @@ defmodule SrcWeb.Router do
     #get last clock by user id
     get "/clocks/last/:user_id", ClockController, :get_last_by_user_id
 
-    #create with user id and it works !
+    #create with user id
     post "/clocks/:user_id", ClockController, :create
 
     # -------------
     # WORKINGTIMES
     # -------------
 
-    #get all (not lazy anymore, it works !)
+    #get all
     get "/workingtimes/:user_id", WorkingtimeController, :get_all
 
     #get one
     get "/workingtimes/:user_id/:id", WorkingtimeController, :get_one
 
-    #create one (finaly, WORKING !)
+    #create one
     post "/workingtimes/:user_id", WorkingtimeController, :create
 
     #update
@@ -65,9 +65,46 @@ defmodule SrcWeb.Router do
     get "/workingtimes", WorkingtimeController, :index
 
     # -------------
+    # ROLES
+    # -------------
+
+    #get all roles
+    get "/roles", RoleController, :index
+
+    #get a role
+    get "/roles/:id", RoleController, :show
+
+    #get all users by role
+    get "/roles/:id/users", RoleController, :get_role_user_list
+
+    #create a role
+    post "/roles/", RoleController, :create
+
+    #edit a role
+    put "/roles/:id", RoleController, :update
+
+    #delete a role
+    delete "/roles/:id", RoleController, :delete
+
+
+    # -------------
     # USERS
     # -------------
 
+    #get all users by email and username
+    get "/users", UserController, :index
+
+    #get one user by id
+    get "/users/:id", UserController, :show
+
+    #create an user
+    post "/users/", UserController, :create
+
+    #edit an user
+    put "/users/:id", UserController, :update
+
+    #delete an user
+    delete "/users/:id", UserController, :delete
 
     # -------------
     # TEAMS
@@ -97,7 +134,7 @@ defmodule SrcWeb.Router do
 
 
     #default
-    resources "/users", UserController, except: [:new, :edit]
+    # resources "/users", UserController, except: [:new, :edit]
     # resources "/workingtimes", WorkingtimeController, except: [:new, :edit]
     # resources "/clocks", ClockController, except: [:new, :edit]
     # resources "/teams", TeamController, except: [:new, :edit]
