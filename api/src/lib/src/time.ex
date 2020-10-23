@@ -121,6 +121,7 @@ defmodule Src.Time do
 
     query = from w in "workingtimes",
               where: w.start >= ^ds and w.end <= ^de and w.user_id == ^String.to_integer(attrs["user_id"]),
+              order_by: [asc: w.start],
               select: [:id, :start, :end]
 
     Repo.all(query)
