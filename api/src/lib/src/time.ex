@@ -121,6 +121,7 @@ defmodule Src.Time do
 
     query = from w in "workingtimes",
               where: w.start >= ^ds and w.end <= ^de and w.user_id == ^String.to_integer(attrs["user_id"]),
+              order_by: [asc: w.start],
               select: [:id, :start, :end]
 
     Repo.all(query)
@@ -209,7 +210,7 @@ defmodule Src.Time do
   def get_last_clock_user_id(user_id) do
     query = from c in "clocks",
               where: c.user_id == ^String.to_integer(user_id),
-              order_by: c.id, limit: 1,
+              order_by: [desc: c.time], limit: 1,
               select: [:id, :time, :status, :user_id]
     Repo.one(query)
 
