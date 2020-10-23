@@ -62,7 +62,7 @@ defmodule SrcWeb.Router do
     delete "/workingtimes/:id", WorkingtimeController, :delete
 
     #get all (without id)
-    get "/workingtimes", WorkingtimeController, :index
+    #get "/workingtimes", WorkingtimeController, :index
 
     # -------------
     # ROLES
