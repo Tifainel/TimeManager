@@ -1,0 +1,38 @@
+version: "3.5"
+
+services:
+  front:
+    build: front/
+    ports: 
+      - "8080:8080"
+    restart: unless-stopped
+
+  api:
+    build: api/src/
+    ports: 
+      - "4000:4000"
+    environment: 
+      SECRET_KEY_BASE: Qnfc6g4wpfrtmRJWFEvk0d7Of3MnGUFZfgZO2rPaghF83bdtnGQDvxcZH+q4xE5B
+      DATABASE_URL: ecto://postgres:postgres@db/src_dev
+    depends_on:
+      - db
+    networks:
+      - postgres
+
+  db:
+    image: postgres:9.6
+    # ports: 
+    #   - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    name: postgres
