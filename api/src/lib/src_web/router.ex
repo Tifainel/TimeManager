@@ -14,12 +14,6 @@ defmodule SrcWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SrcWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
   # Other scopes may use custom stacks.
   scope "/api", SrcWeb do
     pipe_through :api
@@ -153,6 +147,17 @@ defmodule SrcWeb.Router do
     scope "/" do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: SrcWeb.Telemetry
+    end
+  end
+
+  # serve the frontend for all other routes
+  scope "/", SrcWeb do
+    pipe_through :browser
+
+    if (Mix.env() == :dev) do
+      get "/*path", PageController, :index_dev
+    else
+      get "/*path", PageController, :index
     end
   end
 end
