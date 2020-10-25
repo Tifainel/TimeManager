@@ -8,7 +8,7 @@
               :affectWorkingTimes="affectWorkingTimes"
               :switchModal="switchModal"
               :add="false"
-              :selectedWorkingTime="selectedWorkingTime"
+              :selectedId="selectedId"
             ></add-working-time>
           </div>
         </div>
@@ -44,7 +44,7 @@
                 <td>
                   <button
                     class="btn btn-icon btn-info button"
-                    @click="handleEdit(row)"
+                    @click="handleEdit(row.id)"
                   >
                     <i class="fa fa-edit"></i>
                   </button>
@@ -59,9 +59,6 @@
             </l-table>
           </card>
         </div>
-        <modal v-if="showModal" @close="switchModal">
-          <h3 slot="header">custom header</h3>
-        </modal>
       </div>
     </div>
   </div>
@@ -80,14 +77,18 @@ import {
 
 export default {
   name: "WorkingTimes",
-  components: { Card, LTable, AddWorkingTime },
+  components: {
+    Card,
+    LTable,
+    AddWorkingTime
+  },
   data() {
     return {
       userId: "",
       workingTimes: [],
       tableColumns: ["Start", "End", "Actions"],
       showModal: false,
-      selectedWorkingTime: ""
+      selectedId: String
     };
   },
 
@@ -120,8 +121,8 @@ export default {
       }
       return workingTimes;
     },
-    handleEdit(data) {
-      this.selectedWorkingTime = data;
+    handleEdit(id) {
+      this.selectedId = id.toString();
       this.showModal = true;
     },
     handleDelete(workingtimeId) {
@@ -129,8 +130,6 @@ export default {
         this.deleteWorkingTime(workingtimeId);
       }
     },
-    createWorkingTime() {},
-    updateWorkingTime() {},
     async deleteWorkingTime(workingtimeId) {
       const deleted = await deleteWorkingtimeById(workingtimeId);
       if (!deleted.error) {
@@ -195,32 +194,5 @@ export default {
 
 .modal-body {
   margin: 20px 0;
-}
-
-.modal-default-button {
-  float: right;
-}
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
 }
 </style>

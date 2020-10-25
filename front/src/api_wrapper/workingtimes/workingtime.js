@@ -22,7 +22,7 @@ export async function getOneWorkingTimeByUserId(userId, workingtimeID) {
         method: "GET"
       }
     );
-    return (await workingtime.json()).data;
+    return (await workingtime.json());
   } catch (e) {
     return { error: e };
   }
@@ -56,7 +56,7 @@ export async function updateWorkingtimeById(workingtimeID, data) {
           "Content-type": "application/json; charset=UTF-8"
         },
         body: JSON.stringify({
-          workingtime: { start: data.start, end: userData.end }
+          workingtime: { start: data.start, end: data.end }
         })
       }
     );

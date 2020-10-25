@@ -38,7 +38,7 @@
         <button
           type="submit"
           class="btn btn-info btn-fill float-left center button-size"
-          @click.prevent="updateForm"
+          @click="updateForm"
         >
           Modify
         </button>
@@ -54,11 +54,18 @@
 import Card from "src/components/Cards/Card";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { createWorkingtime } from "../../api_wrapper/workingtimes/workingtime";
+import {
+  createWorkingtime,
+  updateWorkingtimeById,
+  getOneWorkingTimeByUserId
+} from "../../api_wrapper/workingtimes/workingtime";
 
 export default {
   name: "AddWorkingTime",
-  components: { Card },
+  components: {
+    Card
+  },
+
   props: {
     affectWorkingTimes: {
       type: Function,
@@ -68,7 +75,7 @@ export default {
       type: Function
     },
     add: Boolean,
-    selectedWorkingTime: Object
+    selectedId: String
   },
   data() {
     return {
@@ -106,12 +113,16 @@ export default {
         this.formError = "Start date and time must be before end date and time";
         return;
       }
-      return { start: start, end: end };
+      return { start: this.getCorrectedDate(start), end: this.getCorrectedDate(end) };
     },
     async createForm() {
       const isChecked = this.checkForm();
       if (isChecked) {
-        const created = await createWorkingtime(this.userId, isChecked.start, isChecked.end);
+        const created = await createWorkingtime(
+          this.userId,
+          isChecked.start,
+          isChecked.end
+        );
         if (created.error) {
           this.formError = "An error has occured";
         } else {
@@ -121,10 +132,9 @@ export default {
       }
     },
     async updateForm() {
-      console.log(selectedWorkingTime)
       const isChecked = this.checkForm();
       if (isChecked) {
-        const updated = await updateWorkingtimeById(this.workingTimeId, isChecked.start, isChecked.end);
+        const updated = await updateWorkingtimeById(this.selectedId, isChecked);
         if (updated.error) {
           this.formError = "An error has occured";
         } else {
@@ -134,15 +144,37 @@ export default {
         }
       }
     },
+    async getSelectedWorkingTime() {
+      const selectedWorkingTime = await getOneWorkingTimeByUserId(
+        this.userId,
+        this.selectedId
+      );
+      const startDate = new Date(selectedWorkingTime.start);
+      const endDate = new Date(selectedWorkingTime.end);
+      this.dates.startDate = startDate.toISOString().split("T")[0];
+      this.dates.endDate = endDate.toISOString().split("T")[0];
+      this.dates.startTime = startDate.toLocaleTimeString("fr-FR");
+      this.dates.endTime = endDate.toLocaleTimeString("fr-FR");
+    },
+    // modifies the date to get the correct date after JSON.stringify
+    getCorrectedDate(date) {
+      const correctedDate = new Date(date);
+      let hoursDiff = correctedDate.getHours() - correctedDate.getTimezoneOffset() / 60;
+      let minutesDiff = (correctedDate.getHours() - correctedDate.getTimezoneOffset()) % 60;
+      correctedDate.setHours(hoursDiff);
+      correctedDate.setMinutes(minutesDiff);
+      return correctedDate;
+    }
   },
-  mounted(){
-    // console.log(selectedWorkingTime)
+  mounted() {
+    if (!this.add) {
+      this.getSelectedWorkingTime();
+    }
   },
 
   beforeMount() {
     const token = Cookies.get("token");
     this.userId = jwt_decode(token).id;
-    console.log(this.add);
   }
 };
 </script>
