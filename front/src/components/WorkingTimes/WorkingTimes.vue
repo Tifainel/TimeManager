@@ -59,6 +59,9 @@
             </l-table>
           </card>
         </div>
+        <modal v-if="showModal" @close="switchModal">
+          <h3 slot="header">custom header</h3>
+        </modal>
       </div>
     </div>
   </div>
