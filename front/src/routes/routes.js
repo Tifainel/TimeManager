@@ -9,6 +9,8 @@ import Dashboard from 'src/pages/Dashboard.vue';
 import WorkingTimes from 'src/pages/WorkingTimes.vue';
 import SignIn from 'src/pages/SignIn.vue';
 import SignUp from 'src/pages/SignUp.vue';
+import TablesList from 'src/pages/TablesList.vue';
+import Faq from 'src/pages/Faq.vue';
 
 const routes = [
   {
@@ -49,6 +51,10 @@ const routes = [
     ],
   },
   { path: '*', component: NotFound },
+  {
+    path: '/help',
+    component: Faq,
+  },
 ];
 
 /**
