@@ -116,14 +116,14 @@ defmodule SrcWeb.Router do
     #get a team by user_id and team_id
     get "/member_teams/:member_id", TeamController, :get_member_teams
 
+    #create a team
+    post "/teams/", TeamController, :create
+
     #put a team
     put "/teams/:id", TeamController, :update
 
     #delete a team
     delete "/teams/:id", TeamController, :delete
-
-    #create a team
-    post "/teams/", TeamController, :create
 
 
 
