@@ -6,12 +6,20 @@ import NotFound from '../pages/NotFoundPage.vue';
 import Overview from 'src/pages/Overview.vue';
 import User from 'src/pages/User.vue';
 import Dashboard from 'src/pages/Dashboard.vue';
-import WorkingTimes from 'src/pages/WorkingTimes.vue'
-import TablesList from 'src/pages/TablesList.vue';
+import WorkingTimes from 'src/pages/WorkingTimes.vue';
+import SignIn from 'src/pages/SignIn.vue';
+import SignUp from 'src/pages/SignUp.vue';
+
 const routes = [
   {
-    path: '/',
-    component: DashboardLayout,
+    path: '/sign-in',
+    name: 'SignIn',
+    component: SignIn,
+  },
+  {
+    path: '/sign-up',
+    name: 'SignUp',
+    component: SignUp,
   },
   {
     path: '/',
