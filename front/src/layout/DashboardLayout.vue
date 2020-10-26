@@ -14,6 +14,10 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>User Profile</p>
       </sidebar-link>
+      <sidebar-link to="/workingtimes">
+        <i class="nc-icon nc-notes"></i>
+        <p>My working time</p>
+      </sidebar-link>
       <check-in-out-button></check-in-out-button>
     </side-bar>
     <div class="main-panel">

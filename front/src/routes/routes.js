@@ -6,6 +6,7 @@ import NotFound from '../pages/NotFoundPage.vue';
 import Overview from 'src/pages/Overview.vue';
 import User from 'src/pages/User.vue';
 import Dashboard from 'src/pages/Dashboard.vue';
+import WorkingTimes from 'src/pages/WorkingTimes.vue'
 import TablesList from 'src/pages/TablesList.vue';
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
         path: 'user',
         name: 'User',
         component: User,
+      },
+      {
+        path: 'workingtimes',
+        name: 'WorkingTimes',
+        component: WorkingTimes,
       },
     ],
   },

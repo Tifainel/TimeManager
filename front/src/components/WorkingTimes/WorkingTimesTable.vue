@@ -14,56 +14,42 @@
         </div>
       </div>
     </transition>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-4">
-          <add-working-time
-            :affectWorkingTimes="affectWorkingTimes"
-            :add="true"
-          ></add-working-time>
-        </div>
-        <div class="col-8">
-          <card
-            class="strpied-tabled-with-hover card"
-            body-classes="table-full-width table-responsive"
-          >
-            <template slot="header">
-              <h4 class="card-title">Upcoming working shifts</h4>
-            </template>
-            <l-table
-              class="table table-hover table-striped"
-              :columns="tableColumns"
-              :data="workingTimes"
+    <card
+      class="strpied-tabled-with-hover card"
+      body-classes="table-full-width table-responsive"
+    >
+      <template slot="header">
+        <h4 class="card-title" v-if="mini">Upcoming working shifts</h4>
+        <h4 class="card-title" v-else>All future working shifts</h4>
+      </template>
+      <l-table
+        class="table table-hover table-striped"
+        :columns="tableColumns"
+        :data="workingTimes"
+      >
+        <template slot="columns"> </template>
+        <template slot-scope="{ row }">
+          <td>{{ row.start }}</td>
+          <td>
+            {{ row.end }}
+          </td>
+          <td>
+            <button
+              class="btn btn-icon btn-info button"
+              @click="handleEdit(row.id)"
             >
-              <template slot="columns"> </template>
-              <template slot-scope="{ row }">
-                <td>{{ row.start }}</td>
-                <td>
-                  {{ row.end }}
-                </td>
-                <td>
-                  <button
-                    class="btn btn-icon btn-info button"
-                    @click="handleEdit(row.id)"
-                  >
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <button
-                    class="btn btn-icon btn-danger"
-                    @click="handleDelete(row.id)"
-                  >
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </td>
-              </template>
-            </l-table>
-          </card>
-        </div>
-        <modal v-if="showModal" @close="switchModal">
-          <h3 slot="header">custom header</h3>
-        </modal>
-      </div>
-    </div>
+              <i class="fa fa-edit"></i>
+            </button>
+            <button
+              class="btn btn-icon btn-danger"
+              @click="handleDelete(row.id)"
+            >
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </template>
+      </l-table>
+    </card>
   </div>
 </template>
 
@@ -79,11 +65,17 @@ import {
 } from "../../api_wrapper/workingtimes/workingtime";
 
 export default {
-  name: "WorkingTimes",
+  name: "WorkingTimesTable",
   components: {
     Card,
     LTable,
     AddWorkingTime
+  },
+  props: {
+    mini: {
+      type: Boolean,
+      required: true
+    }
   },
   data() {
     return {
@@ -112,15 +104,22 @@ export default {
         now.toISOString(),
         endDate.toISOString()
       );
-      workingTimes.splice(3);
+      const workingtimetable = [];
       for (const time in workingTimes) {
         const dateStart = new Date(workingTimes[time].start);
         const dateEnd = new Date(workingTimes[time].end);
-        if (dateStart < now) workingTimes.splice(time, 1);
-        else {
+        if (dateStart < now) {
+          workingtimetable.push(time);
+        } else {
           workingTimes[time].start = this.formatDates(dateStart);
           workingTimes[time].end = this.formatDates(dateEnd);
         }
+      }
+      for (const element in workingtimetable) {
+        workingTimes.splice(element, 1)
+      }
+      if (this.mini == true) {
+        workingTimes.splice(3);
       }
       return workingTimes;
     },
@@ -157,9 +156,6 @@ export default {
 </script>
 
 <style scoped>
-.content {
-  margin-top: 30px;
-}
 .button {
   margin-right: 10px;
 }
