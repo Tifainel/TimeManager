@@ -125,6 +125,15 @@ defmodule SrcWeb.Router do
     #delete a team
     delete "/teams/:id", TeamController, :delete
 
+    #create a team
+    post "/teams/", TeamController, :create
+
+    # -------------
+    # Graph Data
+    # -------------
+
+    #Get DayNightData
+    get "/charmanager/daynightdata/:user_id/:days", ChartManagerController, :day_night_data
 
 
     #default

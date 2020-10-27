@@ -1,2 +1,4 @@
 pg_data
 .DS_store
+
+api/src/assets/*
