@@ -7,6 +7,7 @@ import Overview from 'src/pages/Overview.vue';
 import User from 'src/pages/User.vue';
 import Dashboard from 'src/pages/Dashboard.vue';
 import WorkingTimes from 'src/pages/WorkingTimes.vue';
+import TeamsPage from 'src/pages/TeamsPage.vue';
 import SignIn from 'src/pages/SignIn.vue';
 import SignUp from 'src/pages/SignUp.vue';
 import TablesList from 'src/pages/TablesList.vue';
@@ -47,6 +48,11 @@ const routes = [
         path: 'workingtimes',
         name: 'WorkingTimes',
         component: WorkingTimes,
+      },
+      {
+        path: 'teams',
+        name: 'Teams',
+        component: TeamsPage,
       },
     ],
   },
