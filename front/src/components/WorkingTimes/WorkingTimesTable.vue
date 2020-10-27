@@ -54,44 +54,48 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import Card from "../Cards/Card";
-import LTable from "src/components/Table";
-import AddWorkingTime from "./AddWorkingTime";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import Card from '../Cards/Card';
+import LTable from 'src/components/Table';
+import AddWorkingTime from './AddWorkingTime';
 import {
   getAllWorkingTimesByUserId,
-  deleteWorkingtimeById
-} from "../../api_wrapper/workingtimes/workingtime";
+  deleteWorkingtimeById,
+} from '../../api_wrapper/workingtimes/workingtime';
 
 export default {
-  name: "WorkingTimesTable",
+  name: 'WorkingTimesTable',
   components: {
     Card,
     LTable,
-    AddWorkingTime
+    AddWorkingTime,
   },
   props: {
     mini: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      userId: "",
+      userId: '',
       workingTimes: [],
-      tableColumns: ["Start", "End", "Actions"],
+      tableColumns: ['Start', 'End', 'Actions'],
       showModal: false,
-      selectedId: String
+      selectedId: String,
     };
   },
 
   methods: {
     formatDates(date) {
-      return `${date.toLocaleDateString("fr-FR")} at ${date.toLocaleTimeString(
-        "fr-FR"
-      )}`;
+      console.log(`${date.toLocaleTimeString('fr-FR')}`);
+      return `${date.toLocaleDateString(
+        'fr-FR',
+      )} at ${date.toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })}`;
     },
 
     async getWorkingTimes() {
@@ -102,7 +106,7 @@ export default {
       const workingTimes = await getAllWorkingTimesByUserId(
         this.userId,
         now.toISOString(),
-        endDate.toISOString()
+        endDate.toISOString(),
       );
       const workingtimetable = [];
       for (const time in workingTimes) {
@@ -116,7 +120,7 @@ export default {
         }
       }
       for (const element in workingtimetable) {
-        workingTimes.splice(element, 1)
+        workingTimes.splice(element, 1);
       }
       if (this.mini == true) {
         workingTimes.splice(3);
@@ -128,15 +132,12 @@ export default {
       this.showModal = true;
     },
     handleDelete(workingtimeId) {
-      if (confirm("Do you really want to delete this working time ?")) {
+      if (confirm('Do you really want to delete this working time ?')) {
         this.deleteWorkingTime(workingtimeId);
       }
     },
     async deleteWorkingTime(workingtimeId) {
       const deleted = await deleteWorkingtimeById(workingtimeId);
-      if (!deleted.error) {
-        console.log("deleted");
-      }
       this.affectWorkingTimes();
     },
     async affectWorkingTimes() {
@@ -144,14 +145,14 @@ export default {
     },
     switchModal() {
       this.showModal = !this.showModal;
-    }
+    },
   },
 
   mounted() {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     this.userId = jwt_decode(token).id;
     this.affectWorkingTimes();
-  }
+  },
 };
 </script>
 

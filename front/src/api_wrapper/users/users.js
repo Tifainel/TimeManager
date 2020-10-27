@@ -2,6 +2,7 @@ import config from '../../config.json';
 
 export async function getUserById(userId) {
   try {
+    console.log('url:', `${config.api_url}/users/${userId}`);
     const user = await fetch(`${config.api_url}/users/${userId}`, {
       method: 'GET',
     });

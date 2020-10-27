@@ -34,11 +34,6 @@ const routes = [
         component: Dashboard,
       },
       {
-        path: 'overview',
-        name: 'Overview',
-        component: Overview,
-      },
-      {
         path: 'user',
         name: 'User',
         component: User,
