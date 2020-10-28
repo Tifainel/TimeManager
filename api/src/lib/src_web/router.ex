@@ -88,6 +88,9 @@ defmodule SrcWeb.Router do
     #get all users by email and username
     get "/users", UserController, :index
 
+    #sign in user
+    get "/users/signin", UserController, :sign_in
+
     #get one user by id
     get "/users/:id", UserController, :show
 
