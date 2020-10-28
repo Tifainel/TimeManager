@@ -133,7 +133,7 @@ defmodule SrcWeb.Router do
     # -------------
 
     #Get DayNightData
-    get "/charmanager/daynightdata/:user_id/:days", ChartManagerController, :day_night_data
+    get "/chartmanager/daynightdata/:user_id/:days", ChartManagerController, :day_night_data
 
 
     #default

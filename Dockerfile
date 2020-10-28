@@ -6,8 +6,10 @@ COPY front /src
 
 ENV OUTPUT_DIR=/src/build
 
+RUN apk add git
 RUN npm install
 RUN npm run build
+RUN ls /src/build
 
 FROM elixir:1.9-alpine as build_api
 
