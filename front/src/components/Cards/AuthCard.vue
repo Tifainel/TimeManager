@@ -103,9 +103,23 @@ export default {
     };
   },
   methods: {
+    isSignupFormValid() {
+      return (
+        this.user.username != '' &&
+        this.user.email != '' &&
+        this.user.password != ''
+      );
+    },
+    isSigninFormValid() {
+      return this.user.username != '' && this.user.password != '';
+    },
     async signupUser() {
       if (!this.connexion) {
         this.formError = '';
+        if (!this.isSignupFormValid()) {
+          this.formError = 'All fields must be filled';
+          return;
+        }
         const user = await createUser(this.user);
         if (user.errors) {
           this.formError = 'A user with this username or email already exists';
@@ -117,6 +131,10 @@ export default {
     },
     async signinUser() {
       this.formError = '';
+      if (!this.isSigninFormValid()) {
+        this.formError = 'All fields must be filled';
+        return;
+      }
       const token = (await signin(this.user)).token;
       if (token) {
         Cookies.set('token', token);
