@@ -21,7 +21,7 @@ module.exports = {
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 6,
       }),
-      new webpack.ProvidePlugin({jQuery:"jquery",}),
+      new webpack.ProvidePlugin({ jQuery: 'jquery' }),
     ],
   },
   pwa: {

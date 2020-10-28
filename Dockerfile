@@ -9,8 +9,6 @@ ENV OUTPUT_DIR=/src/build
 RUN npm install
 RUN npm run build
 
-RUN ls /src/build
-
 FROM elixir:1.9-alpine as build_api
 
 RUN apk add --update git build-base nodejs npm
@@ -26,8 +24,6 @@ COPY api/src/lib lib
 
 # copy frontend assets
 COPY --from=build_front /src/build priv/static
-
-RUN ls priv/static
 
 # set build ENV
 ENV MIX_ENV=prod

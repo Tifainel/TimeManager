@@ -1,23 +1,42 @@
 <template>
-  <div class="dashboard">
-    <working-times></working-times>
-    <donut></donut>
+  <div class="container-fluid dashboard">
+    <div class="row">
+      <div class="col-md-4">
+        <add-working-time
+          :affectWorkingTimes="affectWorkingTimes"
+          :add="true"
+        ></add-working-time>
+      </div>
+      <div class="col-md-8">
+        <working-times-table
+          ref="WorkingTimeTableRef"
+          :mini="true"
+        ></working-times-table>
+      </div>
+    </div>
+    <chart-manager></chart-manager>
   </div>
 </template>
 
 <script>
-import WorkingTimes from '../components/WorkingTimes/WorkingTimes';
-import Donut from '../components/Donut';
+import WorkingTimesTable from '../components/WorkingTimes/WorkingTimesTable';
+import AddWorkingTime from '../components/WorkingTimes/AddWorkingTime';
+import ChartManager from '../components/Charts/ChartManager';
 
 export default {
   name: 'Dashboard',
-  components: { WorkingTimes, Donut },
+  components: { AddWorkingTime, WorkingTimesTable, ChartManager },
+
+  methods: {
+    affectWorkingTimes() {
+      this.$refs.WorkingTimeTableRef.affectWorkingTimes();
+    },
+  },
 };
 </script>
 
 <style scoped>
 .dashboard {
-  min-height: 87%;
   margin-top: 30px;
 }
 </style>
