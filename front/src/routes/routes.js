@@ -3,30 +3,61 @@ import DashboardLayout from '../layout/DashboardLayout.vue';
 import NotFound from '../pages/NotFoundPage.vue';
 
 // Admin pages
-import Overview from 'src/pages/Overview.vue';
 import User from 'src/pages/User.vue';
 import Dashboard from 'src/pages/Dashboard.vue';
 import WorkingTimes from 'src/pages/WorkingTimes.vue';
 import TeamsPage from 'src/pages/TeamsPage.vue';
 import SignIn from 'src/pages/SignIn.vue';
 import SignUp from 'src/pages/SignUp.vue';
-import TablesList from 'src/pages/TablesList.vue';
 import Faq from 'src/pages/Faq.vue';
+
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+
+function guard(to, from, next) {
+  if (Cookies.get('token')) {
+    next();
+  } else {
+    next('/signin');
+  }
+}
+
+function redirectToDashboard(to, from, next) {
+  if (!Cookies.get('token')) {
+    next();
+  } else {
+    next('/dashboard');
+  }
+}
+
+function managerGuard(to, from, next) {
+  const token = Cookies.get('token');
+  if (token) {
+    if (jwt_decode(token).role === '2' || jwt_decode(token).role === '3')
+      next();
+    else {
+      next('/dashboard');
+    }
+  }
+}
 
 const routes = [
   {
-    path: '/sign-in',
+    path: '/signin',
     name: 'SignIn',
+    beforeEnter: redirectToDashboard,
     component: SignIn,
   },
   {
-    path: '/sign-up',
+    path: '/signup',
     name: 'SignUp',
+    beforeEnter: redirectToDashboard,
     component: SignUp,
   },
   {
     path: '/',
     component: DashboardLayout,
+    beforeEnter: guard,
     redirect: '/dashboard',
     children: [
       {
@@ -47,6 +78,7 @@ const routes = [
       {
         path: 'teams',
         name: 'Teams',
+        beforeEnter: managerGuard,
         component: TeamsPage,
       },
     ],

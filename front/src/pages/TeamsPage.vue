@@ -1,16 +1,15 @@
 <template>
-  <div>
+  <div class="content">
     <team-management></team-management>
   </div>
 </template>
 <script>
-import TeamManagement from "src/components/Team/TeamManagement";
+import TeamManagement from 'src/components/Team/TeamManagement';
 
 export default {
-  name: "TeamPage",
+  name: 'TeamPage',
   components: { TeamManagement },
-  methods: {}
+  methods: {},
 };
 </script>
-<style>
-</style>
+<style></style>

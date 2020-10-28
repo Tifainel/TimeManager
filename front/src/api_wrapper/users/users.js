@@ -13,10 +13,13 @@ export async function getUserById(userId) {
 
 export async function getUserByEmailAndUsername(email, username) {
   try {
-    const user = await fetch(`${config.api_url}/users?email=${email}&username=${username}`, {
-      method: 'GET',
-    });
-    return (await user.json());
+    const user = await fetch(
+      `${config.api_url}/users?email=${email}&username=${username}`,
+      {
+        method: 'GET',
+      },
+    );
+    return await user.json();
   } catch (e) {
     return { error: e };
   }
@@ -57,10 +60,28 @@ export async function createUser(userData) {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
-        user: { username: userData.username, email: userData.email },
+        user: {
+          username: userData.username,
+          email: userData.email,
+          password: userData.password,
+        },
       }),
     });
-    return { res: 'success' };
+    return await user.json();
+  } catch (e) {
+    return { error: e };
+  }
+}
+
+export async function signin(userData) {
+  try {
+    const token = await fetch(
+      `${config.api_url}/users/signin?username=${userData.username}&password=${userData.password}`,
+      {
+        method: 'GET',
+      },
+    );
+    return await token.json();
   } catch (e) {
     return { error: e };
   }
