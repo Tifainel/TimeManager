@@ -89,13 +89,13 @@ export default {
 
   methods: {
     formatDates(date) {
-      console.log(`${date.toLocaleTimeString('fr-FR')}`);
-      return `${date.toLocaleDateString(
+      return `${date.toLocaleDateString('fr-FR')} at ${date.toLocaleTimeString(
         'fr-FR',
-      )} at ${date.toLocaleTimeString('fr-FR', {
-        hour: '2-digit',
-        minute: '2-digit',
-      })}`;
+        {
+          hour: '2-digit',
+          minute: '2-digit',
+        },
+      )}`;
     },
 
     async getWorkingTimes() {

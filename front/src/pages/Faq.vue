@@ -25,10 +25,6 @@ export default {
       faqData: faq,
     };
   },
-  mounted() {
-    console.log('data: ');
-    console.log(this.faqData);
-  },
 };
 </script>
 
