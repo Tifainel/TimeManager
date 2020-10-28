@@ -5,6 +5,7 @@ defmodule Src.Users.User do
   schema "users" do
     field :email, :string
     field :username, :string
+    field :password, :string, null: false
     field :role, :integer, default: 1
 
     timestamps()
@@ -16,8 +17,8 @@ defmodule Src.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email, :role])
-    |> validate_required([:username, :email, :role])
+    |> cast(attrs, [:username, :email, :role, :password])
+    |> validate_required([:username, :email, :password, :role])
     |> unique_constraint([:username])
     |> unique_constraint([:email])
 

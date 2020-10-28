@@ -46,7 +46,8 @@ defmodule Src.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 1.5"},
-      {:while, "0.2.2"}
+      {:while, "0.2.2"},
+      {:joken, "2.3.0"}
     ]
   end
 

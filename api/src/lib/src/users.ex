@@ -38,6 +38,14 @@ defmodule Src.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
 
+  def check_user_password(params) do
+    IO.inspect(params)
+    query = from u in "users",
+              where: u.username == ^params["username"] and u.password == ^params["password"],
+              select: [:id, :email, :username, :role]
+    Repo.one(query)
+  end
+
   def get_user_by_email_and_username(attrs) do
     query = from u in "users",
               where: u.email == ^attrs["email"] and u.username == ^attrs["username"],
