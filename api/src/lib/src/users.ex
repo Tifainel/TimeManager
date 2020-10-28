@@ -39,9 +39,9 @@ defmodule Src.Users do
 
 
   def check_user_password(params) do
-    IO.inspect(params)
+    pwd = :crypto.hash(:md5, params["password"]) |> Base.encode16()
     query = from u in "users",
-              where: u.username == ^params["username"] and u.password == ^params["password"],
+              where: u.username == ^params["username"] and u.password == ^pwd,
               select: [:id, :email, :username, :role]
     Repo.one(query)
   end
