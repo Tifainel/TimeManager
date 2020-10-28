@@ -11,6 +11,17 @@ export async function getUserById(userId) {
   }
 }
 
+export async function getUserByEmailAndUsername(email, username) {
+  try {
+    const user = await fetch(`${config.api_url}/users?email=${email}&username=${username}`, {
+      method: 'GET',
+    });
+    return (await user.json());
+  } catch (e) {
+    return { error: e };
+  }
+}
+
 export async function updateUserById(userId, userData) {
   try {
     const user = await fetch(`${config.api_url}/users/${userId}`, {

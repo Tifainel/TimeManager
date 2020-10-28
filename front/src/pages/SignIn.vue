@@ -24,6 +24,5 @@ export default {
 .content {
   display: flex;
   justify-content: center;
-  background-color: rgba(203, 203, 210, 0.15) !important;
 }
 </style>

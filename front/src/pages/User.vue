@@ -34,7 +34,7 @@ export default {
   components: {
     EditProfileForm,
     UserCard,
-    DeleteProfile,
+    DeleteProfile
   },
 
   data() {
@@ -42,6 +42,7 @@ export default {
       email: '',
       username: '',
       userId: '',
+      role: '',
     };
   },
   methods: {
@@ -51,6 +52,7 @@ export default {
     },
     async getUser() {
       const token = Cookies.get('token');
+      this.role = jwt_decode(token).role;
       const user = await getUserById(jwt_decode(token).id);
       this.email = user.email;
       this.username = user.username;

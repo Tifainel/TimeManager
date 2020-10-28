@@ -522,11 +522,9 @@
     * Request body :
 ```json
 {
-  "team":{
     "user_id":10,
     "name":"new team",
     "members":[3, 22]
-  }
 }
 ```
 

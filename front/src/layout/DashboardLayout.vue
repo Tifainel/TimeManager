@@ -18,6 +18,10 @@
         <i class="nc-icon nc-notes"></i>
         <p>My working time</p>
       </sidebar-link>
+      <sidebar-link to="/teams" v-if="role != 1">
+        <i class="nc-icon nc-badge"></i>
+        <p>My teams</p>
+      </sidebar-link>
       <check-in-out-button></check-in-out-button>
     </side-bar>
     <div class="main-panel">
@@ -36,6 +40,8 @@ import ContentFooter from './ContentFooter.vue';
 import DashboardContent from './Content.vue';
 import MobileMenu from './MobileMenu.vue';
 import CheckInOutButton from '../components/ChekInOutButton';
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 
 export default {
   components: {
@@ -45,6 +51,11 @@ export default {
     MobileMenu,
     CheckInOutButton,
   },
+  data() {
+    return {
+      role: ""
+    }
+  },
   methods: {
     toggleSidebar() {
       if (this.$sidebar.showSidebar) {
@@ -52,6 +63,11 @@ export default {
       }
     },
   },
+
+  mounted() {
+    const token = Cookies.get("token");
+    this.role = jwt_decode(token).role;
+  }
 };
 </script>
 
