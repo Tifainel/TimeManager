@@ -14,9 +14,13 @@
         <i class="nc-icon nc-notes"></i>
         <p>My working time</p>
       </sidebar-link>
-      <sidebar-link to="/teams" v-if="role != 1">
+      <sidebar-link to="/teams" v-if="role == 2 || role == 3">
         <i class="nc-icon nc-badge"></i>
         <p>My teams</p>
+      </sidebar-link>
+      <sidebar-link to="/administration" v-if="role == 3">
+        <i class="nc-icon nc-settings-gear-64"></i>
+        <p>Administration</p>
       </sidebar-link>
       <check-in-out-button></check-in-out-button>
     </side-bar>

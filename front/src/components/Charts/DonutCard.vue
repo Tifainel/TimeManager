@@ -7,7 +7,6 @@
         </h4>
       </template>
       <base-input
-        class="lol"
         type="number"
         min="1"
         label="On the last ... days"
@@ -22,38 +21,51 @@
         :data="donutData"
         colors='[ "#FF6384", "#36A2EB" ]'
         resize="true"
+        :key="changed"
       >
       </donut-chart>
     </card>
   </div>
 </template>
 <script>
-import Raphael from 'raphael/raphael';
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import Raphael from "raphael/raphael";
 global.Raphael = Raphael;
-
-import { DonutChart } from 'vue-morris';
-import Card from '../Cards/Card';
+import { getDayNightChart } from "../../api_wrapper/charts/charts";
+import { DonutChart } from "vue-morris";
+import Card from "../Cards/Card";
 
 export default {
-  name: 'DonutCard',
+  name: "DonutCard",
   components: { DonutChart, Card },
   data() {
     return {
-      nbDays: 7,
+      userId: '',
+      nbDays: 5,
       donutData: [
-        { label: 'Day', value: 100 },
-        { label: 'Night', value: 30 },
+        { label: "Day", value: 0 },
+        { label: "Night", value: 0 }
       ],
+      changed: true
     };
   },
   methods: {
     handleNbDaysChange() {
-      this.donutData = [
-        { label: 'Day', value: 10 * this.nbDays },
-        { label: 'Night', value: 5 * this.nbDays },
-      ];
+      this.getData();
     },
+    async getData() {
+      const data = await getDayNightChart(this.userId, this.nbDays);
+      this.donutData[0].value = data.totalDay / 3600;
+      this.donutData[1].value = data.totalNight / 3600;
+      this.changed = !this.changed;
+    }
   },
+  async beforeMount() {
+    const token = Cookies.get("token");
+    this.userId = jwt_decode(token).id;
+    this.getData();
+  }
 };
 </script>
 <style scoped lang="scss">
