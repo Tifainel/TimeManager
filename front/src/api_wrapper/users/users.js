@@ -33,7 +33,7 @@ export async function updateUserById(userId, userData) {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
-        user: { username: userData.username, email: userData.email },
+        user: { username: userData.username, email: userData.email, role: userData.role },
       }),
     });
     return { res: 'success' };

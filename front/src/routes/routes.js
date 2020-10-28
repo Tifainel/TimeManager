@@ -9,6 +9,7 @@ import WorkingTimes from 'src/pages/WorkingTimes.vue';
 import TeamsPage from 'src/pages/TeamsPage.vue';
 import SignIn from 'src/pages/SignIn.vue';
 import SignUp from 'src/pages/SignUp.vue';
+import AdministrationPage from 'src/pages/AdministrationPage';
 import Faq from 'src/pages/Faq.vue';
 
 import Cookies from 'js-cookie';
@@ -35,6 +36,16 @@ function managerGuard(to, from, next) {
   if (token) {
     if (jwt_decode(token).role === '2' || jwt_decode(token).role === '3')
       next();
+    else {
+      next('/dashboard');
+    }
+  }
+}
+
+function adminGuard(to, from, next) {
+  const token = Cookies.get('token');
+  if (token) {
+    if (jwt_decode(token).role === '3') next();
     else {
       next('/dashboard');
     }
@@ -80,6 +91,12 @@ const routes = [
         name: 'Teams',
         beforeEnter: managerGuard,
         component: TeamsPage,
+      },
+      {
+        path: 'administration',
+        name: 'Administration',
+        beforeEnter: adminGuard,
+        component: AdministrationPage,
       },
     ],
   },
