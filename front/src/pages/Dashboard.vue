@@ -1,20 +1,22 @@
 <template>
-  <div class="container-fluid dashboard">
-    <div class="row">
-      <div class="col-md-4">
-        <add-working-time
-          :affectWorkingTimes="affectWorkingTimes"
-          :add="true"
-        ></add-working-time>
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+          <add-working-time
+            :affectWorkingTimes="affectWorkingTimes"
+            :add="true"
+          ></add-working-time>
+        </div>
+        <div class="col-md-8">
+          <working-times-table
+            ref="WorkingTimeTableRef"
+            :mini="true"
+          ></working-times-table>
+        </div>
       </div>
-      <div class="col-md-8">
-        <working-times-table
-          ref="WorkingTimeTableRef"
-          :mini="true"
-        ></working-times-table>
-      </div>
+      <chart-manager></chart-manager>
     </div>
-    <chart-manager></chart-manager>
   </div>
 </template>
 
@@ -36,7 +38,7 @@ export default {
 </script>
 
 <style scoped>
-.dashboard {
-  margin-top: 30px;
-}
+/* .dashboard {
+  margin-top: 30px; */
+/* } */
 </style>

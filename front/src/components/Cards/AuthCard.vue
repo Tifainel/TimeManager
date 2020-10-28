@@ -18,7 +18,7 @@
     </h4>
 
     <form>
-      <div class="row">
+      <div class="row" v-if="!connexion">
         <div class="col-md-6">
           <base-input
             type="email"
@@ -40,7 +40,7 @@
           </base-input>
         </div>
       </div>
-      <div class="row" v-if="!connexion">
+      <div class="row">
         <div class="col-md-6">
           <base-input
             type="password"
@@ -51,11 +51,12 @@
           </base-input>
         </div>
       </div>
+      <p class="form-error text-center">{{ formError }}</p>
       <div class="text-center" v-if="connexion">
         <button
           type="submit"
           class="btn btn-info btn-fill float-right"
-          @click.prevent="connexion"
+          @click.prevent="signinUser"
         >
           Connexion
         </button>
@@ -64,48 +65,65 @@
         <button
           type="submit"
           class="btn btn-info btn-fill float-right"
-          @click.prevent="createProfile"
+          @click.prevent="signupUser"
         >
           Create Profile
         </button>
       </div>
       <div class="msg" v-if="connexion">
-        Want to create an account ? <a href="/#/sign-in">Sign in here</a>
+        Want to create an account ? <a href="/#/signup">Sign up here</a>
       </div>
       <div class="msg" v-else>
-        Already have an account ? <a href="/#/sign-up">Sign up here</a>
+        Already have an account ? <a href="/#/signin">Sign in here</a>
       </div>
     </form>
   </card>
 </template>
+
 <script>
+import { createUser, signin } from '../../api_wrapper/users/users';
+import Cookies from 'js-cookie';
+
 export default {
-  name: "AuthCard",
+  name: 'AuthCard',
   components: {},
   props: {
     connexion: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
       user: {
-        username: "",
-        email: "",
-        password: ""
-      }
+        username: '',
+        email: '',
+        password: '',
+      },
+      formError: '',
     };
   },
   methods: {
-    createProfile() {}
-    // redirect() {
-    //   if (connexion) {
-    //     this.$router.push({ name: "SignIn" });
-    //   } else {
-    //     this.$router.push({ name: "SignUp" });
-    //   }
-    // }
-  }
+    async signupUser() {
+      if (!this.connexion) {
+        this.formError = '';
+        const user = await createUser(this.user);
+        if (user.errors) {
+          this.formError = 'A user with this username or email already exists';
+        }
+      }
+      if (this.formError === '') {
+        this.signinUser();
+      }
+    },
+    async signinUser() {
+      this.formError = '';
+      const token = (await signin(this.user)).token;
+      if (token) {
+        Cookies.set('token', token);
+        this.$router.push('dashboard');
+      } else this.formError = 'Incorrect username or password';
+    },
+  },
 };
 </script>
 <style>

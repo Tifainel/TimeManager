@@ -18,7 +18,7 @@
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link" @click.prevent="handleLogout">
               Log out
             </a>
           </li>
@@ -28,6 +28,8 @@
   </nav>
 </template>
 <script>
+import Cookies from 'js-cookie';
+
 export default {
   computed: {
     routeName() {
@@ -55,6 +57,10 @@ export default {
     },
     hideSidebar() {
       this.$sidebar.displaySidebar(false);
+    },
+    handleLogout() {
+      Cookies.remove('token');
+      this.$router.push('signup');
     },
   },
 };

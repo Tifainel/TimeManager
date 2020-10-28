@@ -2,7 +2,7 @@ module.exports = [
   {
     title: 'I have a suggestion for a new feature in the Time Manager',
     content:
-      'Send your suggestions to this email : contact.time-manager@gotham.com. Many of your suggestions will be implemented in future updates.',
+      'Send your suggestions to this email : contact.time-manager@gotham.com. Many of your suggestions will be implemented in future updates, the developpers are working hard on it !',
   },
   {
     title: 'I forgot to clock in or out, what should I do ?',
