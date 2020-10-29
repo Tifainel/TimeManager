@@ -58,7 +58,7 @@
           class="btn btn-info btn-fill float-right"
           @click.prevent="signinUser"
         >
-          Connexion
+          Connection
         </button>
       </div>
       <div class="text-center" v-else>
@@ -110,6 +110,9 @@ export default {
         this.user.password != ''
       );
     },
+    isEmailValid() {
+      return this.user.email.match(/([a-zA-Z0-9\.\-\_]*)@[a-zA-Z0-9\.\-]*\.[a-zA-Z]{​1,3}​/g);
+    },
     isSigninFormValid() {
       return this.user.username != '' && this.user.password != '';
     },
@@ -118,6 +121,10 @@ export default {
         this.formError = '';
         if (!this.isSignupFormValid()) {
           this.formError = 'All fields must be filled';
+          return;
+        }
+        if(!this.isEmailValid()) {
+          this.formError = 'The email is incorrect';
           return;
         }
         const user = await createUser(this.user);

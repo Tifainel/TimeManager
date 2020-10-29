@@ -102,6 +102,7 @@ const routes = [
   { path: '*', component: NotFound },
   {
     path: '/help',
+    name: "FAQ",
     component: Faq,
   },
 ];
