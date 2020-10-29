@@ -19,7 +19,6 @@
 <script>
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
 import { getTeamsbyManagerId, modifyTeam } from "../../api_wrapper/teams/teams";
 import BaseDropDown from "src/components/BaseDropdown.vue";
@@ -27,7 +26,7 @@ import { getUserById } from "../../api_wrapper/users/users";
 
 export default {
   name: "DropDownTeams",
-  components: { BaseDropDown, TeamMemberCard, PulseLoader },
+  components: { BaseDropDown, TeamMemberCard },
   props: {
     setSelectedId: Function,
   },
