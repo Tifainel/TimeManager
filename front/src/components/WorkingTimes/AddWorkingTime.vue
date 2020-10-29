@@ -76,6 +76,7 @@ export default {
     },
     add: Boolean,
     selectedId: String,
+    selectedUserId: String
   },
   data() {
     return {
@@ -178,8 +179,12 @@ export default {
   },
 
   beforeMount() {
+    if (!this.selectedUserId) {
     const token = Cookies.get('token');
     this.userId = jwt_decode(token).id;
+    } else {
+      this.userId = this.selectedUserId
+    }
   },
 };
 </script>

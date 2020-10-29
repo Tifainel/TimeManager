@@ -15,6 +15,7 @@
         @change="handleNbDaysChange"
       >
       </base-input>
+      <p v-if="!available" style="text-align: center">No data available at this time</p>
       <donut-chart
         class="donut-chart"
         id="donut"
@@ -22,6 +23,7 @@
         colors='[ "#FF6384", "#36A2EB" ]'
         resize="true"
         :key="changed"
+        v-if="available"
       >
       </donut-chart>
     </card>
@@ -39,15 +41,19 @@ import Card from "../Cards/Card";
 export default {
   name: "DonutCard",
   components: { DonutChart, Card },
+  props: {
+    selectedUserId: String
+  },
   data() {
     return {
-      userId: '',
+      userId: "",
       nbDays: 5,
       donutData: [
         { label: "Day", value: 0 },
         { label: "Night", value: 0 }
       ],
-      changed: true
+      changed: true,
+      available : false,
     };
   },
   methods: {
@@ -56,14 +62,23 @@ export default {
     },
     async getData() {
       const data = await getDayNightChart(this.userId, this.nbDays);
-      this.donutData[0].value = data.totalDay / 3600;
-      this.donutData[1].value = data.totalNight / 3600;
-      this.changed = !this.changed;
+      if (data.error) {
+        this.available = false;
+      } else {
+        this.donutData[0].value = data.totalDay / 3600;
+        this.donutData[1].value = data.totalNight / 3600;
+        this.available = true;
+        this.changed = !this.changed;
+      }
     }
   },
   async beforeMount() {
-    const token = Cookies.get("token");
-    this.userId = jwt_decode(token).id;
+    if (!this.selectedUserId) {
+      const token = Cookies.get("token");
+      this.userId = jwt_decode(token).id;
+    } else {
+      this.userId = this.selectedUserId;
+    }
     this.getData();
   }
 };
