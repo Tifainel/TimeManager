@@ -2,18 +2,18 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6">
-        <create-team></create-team>
+        <create-team :affectChange="affectChange"></create-team>
       </div>
       <div class="col-sm-6">
-        <modify-members></modify-members>
+        <modify-members :key="changed"></modify-members>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-6">
-        <add-member></add-member>
+        <add-member :key="changed" :affectChange="affectChange"></add-member>
       </div>
       <div class="col-sm-6">
-        <delete-team></delete-team>
+        <delete-team :key="changed" :affectChange="affectChange"></delete-team>
       </div>
     </div>
   </div>
@@ -32,13 +32,14 @@ export default {
 
   data() {
     return {
-      userId: '',
-      role: '',
+      changed: false
     };
   },
-  methods: {},
-
-  async mounted() {},
+  methods: {
+    affectChange() {
+      this.changed = !this.changed
+    }
+  },
 };
 </script>
 <style>

@@ -1,7 +1,8 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-        <working-times-table :mini="false"></working-times-table>
+        <drop-down-teams :setSelectedId="setSelectedId"></drop-down-teams>
+        <working-times-table :mini="false" :selectedUserId="selectedUserId"></working-times-table>
     </div>
   </div>
 </template>
@@ -10,20 +11,21 @@
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import WorkingTimesTable from '../components/WorkingTimes/WorkingTimesTable'
+import DropDownTeams from '../components/Team/DropDownTeams'
 
 export default {
   name: 'WorkingTimes',
-  components: { WorkingTimesTable },
+  components: { WorkingTimesTable, DropDownTeams },
 
   data() {
     return {
-      email: '',
-      username: '',
-      userId: '',
+      selectedUserId: ""
     };
   },
   methods: {
-    
+    setSelectedId(id) {
+      this.selectedUserId = id.toString();
+    }
   },
 
   async mounted() {

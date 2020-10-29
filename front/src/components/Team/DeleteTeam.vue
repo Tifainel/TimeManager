@@ -37,7 +37,9 @@ import BaseDropDown from "src/components/BaseDropdown.vue";
 export default {
   name: "DeleteTeam",
   components: { Card, BaseDropDown },
-
+  props: {
+    affectChange: Function
+  },
   data() {
     return {
       userId: "",
@@ -61,6 +63,7 @@ export default {
         members: []
       };
       this.refresh();
+      this.affectChange();
     },
     affectSelected(team) {
       this.selectedTeam = team;

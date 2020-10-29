@@ -52,7 +52,9 @@ import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
 export default {
   name: "AddMember",
   components: { Card, BaseDropDown, TeamMemberCard },
-
+  props: {
+    affectChange: Function
+  },
   data() {
     return {
       userId: "",
@@ -92,6 +94,7 @@ export default {
             modifyTeam(this.selectedTeam.id, this.selectedTeam);
             this.formError = "";
             this.formSuccess = `This user was added to ${this.selectedTeam.name}`;
+            this.affectChange();
           } else {
             this.formError = "This user is already in this team";
           }

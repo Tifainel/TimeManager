@@ -76,6 +76,7 @@ export default {
       type: Boolean,
       required: true,
     },
+    selectedUserId: String
   },
   data() {
     return {
@@ -108,6 +109,7 @@ export default {
         now.toISOString(),
         endDate.toISOString(),
       );
+      console.log(workingTimes)
       const workingtimetable = [];
       for (const time in workingTimes) {
         const dateStart = new Date(workingTimes[time].start);
@@ -149,8 +151,12 @@ export default {
   },
 
   mounted() {
-    const token = Cookies.get('token');
-    this.userId = jwt_decode(token).id;
+    if(!this.selectedUserId) {
+      const token = Cookies.get('token');
+      this.selectedUserId = jwt_decode(token).id;
+    } else {
+      this.userId = this.selectedId;
+    }
     this.affectWorkingTimes();
   },
 };
