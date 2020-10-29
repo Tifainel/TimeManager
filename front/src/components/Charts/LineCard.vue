@@ -12,16 +12,23 @@
         label="On the last ... days"
         placeholder="Number of days"
         v-model="nbDays"
+        @change="handleNbDaysChange"
       >
       </base-input>
+      <p v-if="!available" style="text-align: center">
+        No data available at this time
+      </p>
+
       <line-chart
         id="chart_issue_24"
         :data="lineData"
-        xkey="date"
+        xkey="day"
         resize="true"
-        ykeys='["timeWorked", "scheduledTime"]'
-        labels='["Time worked", "Scheduled time"]'
-        lineColors='[ "#FF6384", "#36A2EB" ]'
+        ykeys='["time", "scheduled"]'
+        labels='["Hours worked", "Scheduled hours"]'
+        lineColors='[ "#36A2EB", "#FF6384" ]'
+        :key="changed"
+        v-if="available"
       >
       </line-chart>
     </card>
@@ -29,27 +36,57 @@
 </template>
 
 <script>
-import Raphael from 'raphael/raphael';
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import Raphael from "raphael/raphael";
 global.Raphael = Raphael;
-
-import { LineChart } from 'vue-morris';
-import Card from '../Cards/Card';
+import { getWorkingTimeAndClocked } from "../../api_wrapper/charts/charts";
+import { LineChart } from "vue-morris";
+import Card from "../Cards/Card";
 
 export default {
-  name: 'LineCard',
+  name: "LineCard",
   components: { LineChart, Card },
+  props: {
+    selectedUserId: String
+  },
   data() {
     return {
       nbDays: 7,
-      lineData: [
-        { date: '2020-02-01', timeWorked: 10, scheduledTime: 5 },
-        { date: '2020-02-02', timeWorked: 40, scheduledTime: 15 },
-        { date: '2020-02-03', timeWorked: 20, scheduledTime: 25 },
-        { date: '2020-02-04', timeWorked: 30, scheduledTime: 20 },
-        { date: '2020-02-05', timeWorked: 30, scheduledTime: 20 },
-      ],
+      lineData: [],
+      userId: "",
+      changed: true,
+      available: false
     };
   },
+  methods: {
+    handleNbDaysChange() {
+      this.getData();
+    },
+    async getData() {
+      const data = await getWorkingTimeAndClocked(this.userId, this.nbDays);
+      if (data.error) {
+        this.available = false;
+      } else {
+        this.lineData = data;
+        for (let i in this.lineData) {
+          this.lineData[i].scheduled = Math.round(this.lineData[i].scheduled / 3600);
+          this.lineData[i].time = Math.round(this.lineData[i].time / 3600);
+        }
+        this.available = true;
+        this.changed = !this.changed;
+      }
+    },
+  },
+  mounted() {
+    if (!this.selectedUserId) {
+      const token = Cookies.get("token");
+      this.userId = jwt_decode(token).id;
+    } else {
+      this.userId = this.selectedUserId;
+    }
+    this.getData();
+  }
 };
 </script>
 <style scoped lang="scss">
