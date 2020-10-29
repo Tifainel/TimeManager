@@ -1,40 +1,53 @@
 <template>
-  <card>
-    <h4 slot="header" class="card-title">Modify the priviledge of a user</h4>
-    <form>
-      <base-input
-        type="text"
-        label="Username"
-        placeholder="Username"
-        v-model="username"
-      >
-      </base-input>
-      <base-input type="text" label="Email" placeholder="email" v-model="email">
-      </base-input>
-      <label>Role</label>
-      <base-drop-down tag="div" :title="selectedRole.name" id="select">
-        <a
-          class="dropdown-item"
-          v-for="role in roles"
-          :key="role.id"
-          @click="selectedRole = role"
-          >{{ role.name }}</a
-        >
-      </base-drop-down>
-      <p class="form-error text-center">{{ formError }}</p>
-      <div class="text-center">
-        <button
-          type="submit"
-          class="btn btn-info btn-fill float-centers"
-          @click.prevent="addMember"
-        >
-          Change the role
-        </button>
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <card class="col-md-12">
+          <h4 slot="header" class="card-title">
+            Modify the priviledge of a user
+          </h4>
+          <form>
+            <base-input
+              type="text"
+              label="Username"
+              placeholder="Username"
+              v-model="username"
+            >
+            </base-input>
+            <base-input
+              type="text"
+              label="Email"
+              placeholder="email"
+              v-model="email"
+            >
+            </base-input>
+            <label>Role</label>
+            <base-drop-down tag="div" :title="selectedRole.name" id="select">
+              <a
+                class="dropdown-item"
+                v-for="role in roles"
+                :key="role.id"
+                @click="selectedRole = role"
+                >{{ role.name }}</a
+              >
+            </base-drop-down>
+            <p class="form-error text-center">{{ formError }}</p>
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn btn-info btn-fill float-centers"
+                @click.prevent="addMember"
+              >
+                Change the role
+              </button>
+            </div>
+            <p class="form-success text-center">{{ formSuccess }}</p>
+            <div class="clearfix"></div>
+          </form>
+        </card>
       </div>
-      <p class="form-success text-center">{{ formSuccess }}</p>
-      <div class="clearfix"></div>
-    </form>
-  </card>
+    </div>
+  </div>
 </template>
 <script>
 import Cookies from "js-cookie";
@@ -42,7 +55,10 @@ import jwt_decode from "jwt-decode";
 import Card from "src/components/Cards/Card.vue";
 import { getRoles } from "src/api_wrapper/roles/roles.js";
 import BaseDropDown from "src/components/BaseDropdown.vue";
-import { getUserByEmailAndUsername, updateUserById } from "src/api_wrapper/users/users.js";
+import {
+  getUserByEmailAndUsername,
+  updateUserById
+} from "src/api_wrapper/users/users.js";
 import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
 
 export default {
@@ -78,7 +94,6 @@ export default {
             username: this.user.username,
             role: this.selectedRole.id
           };
-          console.log(body)
           const updated = await updateUserById(this.user.id, body);
           if (!updated.error) {
             this.formError = "";

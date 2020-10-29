@@ -33,7 +33,9 @@ import { createTeam } from "../../api_wrapper/teams/teams";
 export default {
   name: "CreateTeam",
   components: { Card },
-
+  props: {
+    affectChange: Function
+  },
   data() {
     return {
       userId: "",
@@ -60,6 +62,7 @@ export default {
         this.formError = "An error has occured";
       } else {
         this.formSuccess = "This team has been created";
+        this.affectChange();
       }
     }
   },
