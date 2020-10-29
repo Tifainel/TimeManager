@@ -14,6 +14,7 @@ defmodule Src.ChartManager do
   def get_daytime_data(user_id, min_date, max_date) do
     query = from c in "clocks",
               where: c.user_id == ^String.to_integer(user_id) and c.time > ^min_date and c.time < ^max_date,
+              order_by: [asc: c.time],
               select: [:id, :time, :status]
     Repo.all(query)
   end
@@ -21,6 +22,7 @@ defmodule Src.ChartManager do
   def get_dayworkingtime_data(user_id, min_date, max_date) do
     query = from w in "workingtimes",
               where: w.user_id == ^String.to_integer(user_id) and (w.start > ^min_date or w.end > ^min_date) and w.start < ^max_date,
+              order_by: [asc: w.start],
               select: [:id, :start, :end]
     Repo.all(query)
   end

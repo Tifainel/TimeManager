@@ -75,7 +75,6 @@ defmodule SrcWeb.ChartManagerController do
     todayDate = Date.utc_today()
     minDate = Date.add(todayDate, - String.to_integer(days))
 
-    # timeperdays = Map.new()
     timeperdays = []
     loopDate = minDate
     i = 0
@@ -87,14 +86,13 @@ defmodule SrcWeb.ChartManagerController do
 
       # IO.inspect()
       day = ChartManager.get_daytime_data(user_id, minDate, maxDate)
-      #IO.inspect(day)
+      IO.inspect(day)
 
       total = calc_time_per_day(day, minDate, maxDate)
       {
         Date.add(loopDate, 1),
         List.insert_at(timeperdays, i, %{"day"=>loopDate, "time"=>total}),
         i + 1
-        #timeperdays = Map.put(timeperdays, loopDate, total)
       }
     end #while end
     timeperdays
@@ -124,14 +122,12 @@ defmodule SrcWeb.ChartManagerController do
       else
         {NaiveDateTime.diff(nextLoopDate, loopDate[:time]), counter + 1}
       end
-      # {c + 2, t + 1}
     else
       if loopDate[:status] == false and counter == 0 do
         {NaiveDateTime.diff(loopDate[:time], min), counter + 1}
       else
         {0, counter + 1}
       end
-      #{counter + 1, total + 1}
     end
   end
 
@@ -166,7 +162,6 @@ defmodule SrcWeb.ChartManagerController do
     todayDate = Date.utc_today()
     minDate = Date.add(todayDate, - String.to_integer(days))
 
-    # timeperdays = Map.new()
     timeperdays = []
     loopDate = minDate
     i = 0
@@ -176,7 +171,6 @@ defmodule SrcWeb.ChartManagerController do
       minDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T00:00:00.000000Z")
       maxDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T23:59:59.000000Z")
 
-      # IO.inspect()
       day = ChartManager.get_dayworkingtime_data(user_id, minDate, maxDate)
       total = calc_scheduled_time_per_day(day, minDate, maxDate)
       {
@@ -184,20 +178,12 @@ defmodule SrcWeb.ChartManagerController do
         List.insert_at(timeperdays, i, %{"day"=>loopDate, "scheduled"=>total}),
         i + 1
       }
-      #il faut renvoyer le total ici putin de merde.
-      # {
-      #   Date.add(loopDate, 1),
-      #   List.insert_at(timeperdays, i, %{"day"=>loopDate, "time"=>total}),
-      #   i + 1
-      #   #timeperdays = Map.put(timeperdays, loopDate, total)
-      # }
     end #while end
     timeperdays
 
   end
 
   defp calc_scheduled_time_per_day(dayData, min, max) do
-    #   #IO.inspect(dayData)
     total = 0
     counter = 0
     #while start
@@ -219,25 +205,6 @@ defmodule SrcWeb.ChartManagerController do
     else
       {NaiveDateTime.diff(loopDate[:end], min), counter + 1}
     end
-    # c = counter + 1
-    # nextLoopDate = max
-    # next = Enum.at(dayData, c)
-    # if loopDate[:status] == true do
-    #   if next != nil do
-    #     nextLoopDate = next[:time]
-    #     {NaiveDateTime.diff(nextLoopDate, loopDate[:time]), counter + 2}
-    #   else
-    #     {NaiveDateTime.diff(nextLoopDate, loopDate[:time]), counter + 1}
-    #   end
-    #   # {c + 2, t + 1}
-    # else
-    #   if loopDate[:status] == false and counter == 0 do
-    #     {NaiveDateTime.diff(loopDate[:time], min), counter + 1}
-    #   else
-    #     {0, counter + 1}
-    #   end
-    #   #{counter + 1, total + 1}
-    # end
   end
 
 end
