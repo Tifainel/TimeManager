@@ -12,7 +12,7 @@
       </sidebar-link>
       <sidebar-link to="/workingtimes">
         <i class="nc-icon nc-notes"></i>
-        <p>My working time</p>
+        <p>My working times</p>
       </sidebar-link>
       <sidebar-link to="/teams" v-if="role == 2 || role == 3">
         <i class="nc-icon nc-badge"></i>
@@ -40,8 +40,8 @@ import ContentFooter from './ContentFooter.vue';
 import DashboardContent from './Content.vue';
 import MobileMenu from './MobileMenu.vue';
 import CheckInOutButton from '../components/ChekInOutButton';
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
 
 export default {
   components: {
@@ -53,8 +53,8 @@ export default {
   },
   data() {
     return {
-      role: ""
-    }
+      role: '',
+    };
   },
   methods: {
     toggleSidebar() {
@@ -65,9 +65,9 @@ export default {
   },
 
   mounted() {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     this.role = jwt_decode(token).role;
-  }
+  },
 };
 </script>
 

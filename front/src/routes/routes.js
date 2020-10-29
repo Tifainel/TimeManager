@@ -34,8 +34,7 @@ function redirectToDashboard(to, from, next) {
 function managerGuard(to, from, next) {
   const token = Cookies.get('token');
   if (token) {
-    if (jwt_decode(token).role === '2' || jwt_decode(token).role === '3')
-      next();
+    if (jwt_decode(token).role === 2 || jwt_decode(token).role === 3) next();
     else {
       next('/dashboard');
     }
@@ -45,7 +44,7 @@ function managerGuard(to, from, next) {
 function adminGuard(to, from, next) {
   const token = Cookies.get('token');
   if (token) {
-    if (jwt_decode(token).role === '3') next();
+    if (jwt_decode(token).role === 3) next();
     else {
       next('/dashboard');
     }
@@ -78,17 +77,17 @@ const routes = [
       },
       {
         path: 'user',
-        name: 'User',
+        name: 'User profile',
         component: User,
       },
       {
         path: 'workingtimes',
-        name: 'WorkingTimes',
+        name: 'My working times',
         component: WorkingTimes,
       },
       {
         path: 'teams',
-        name: 'Teams',
+        name: 'My teams',
         beforeEnter: managerGuard,
         component: TeamsPage,
       },

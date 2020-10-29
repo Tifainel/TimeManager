@@ -34,7 +34,7 @@
         </button>
         <p class="form-success">{{ formSuccess }}</p>
       </div>
-      <div v-else>
+      <div v-else class="button-setup">
         <button
           type="submit"
           class="btn btn-info btn-fill float-left center button-size"
@@ -200,6 +200,7 @@ export default {
 }
 .center {
   text-align: center;
+  margin-bottom: 10px;
 }
 .form-error {
   color: #fc6b74;
@@ -213,5 +214,9 @@ export default {
 }
 .button-size {
   width: 200px;
+}
+.button-setup {
+  display: flex;
+  flex-direction: column;
 }
 </style>

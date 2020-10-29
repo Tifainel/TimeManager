@@ -16,7 +16,7 @@
       <div class="text-center">
         <button
           type="submit"
-          class="btn btn-info btn-fill float-right"
+          class="btn btn-info btn-danger"
           @click.prevent="deleteTeam"
         >
           Delete
@@ -28,29 +28,29 @@
   </card>
 </template>
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import Card from "src/components/Cards/Card.vue";
-import { deleteTeam, getTeamsbyManagerId } from "../../api_wrapper/teams/teams";
-import BaseDropDown from "src/components/BaseDropdown.vue";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import Card from 'src/components/Cards/Card.vue';
+import { deleteTeam, getTeamsbyManagerId } from '../../api_wrapper/teams/teams';
+import BaseDropDown from 'src/components/BaseDropdown.vue';
 
 export default {
-  name: "DeleteTeam",
+  name: 'DeleteTeam',
   components: { Card, BaseDropDown },
   props: {
     affectChange: Function
   },
   data() {
     return {
-      userId: "",
+      userId: '',
       teams: [],
       selectedTeam: {
-        name: "Select a team",
-        id: "",
-        members: []
+        name: 'Select a team',
+        id: '',
+        members: [],
       },
-      formSuccess: "",
-      formError: ""
+      formSuccess: '',
+      formError: '',
     };
   },
   methods: {
@@ -58,9 +58,9 @@ export default {
       deleteTeam(this.selectedTeam.id);
       this.formSuccess = `The team ${this.selectedTeam.name} has been deleted`;
       this.selectedTeam = {
-        name: "Select a team",
-        id: "",
-        members: []
+        name: 'Select a team',
+        id: '',
+        members: [],
       };
       this.refresh();
       this.affectChange();
@@ -70,14 +70,14 @@ export default {
     },
     async refresh() {
       this.teams = await getTeamsbyManagerId(this.userId);
-    }
+    },
   },
 
   mounted() {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     this.userId = jwt_decode(token).id;
     this.refresh();
-  }
+  },
 };
 </script>
 <style>
