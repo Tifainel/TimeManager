@@ -78,12 +78,20 @@ export default {
     background-color: #ee2d20;
     border-color: #ee2d20;
   }
+  &:focus {
+    background-color: #ee2d20;
+    border-color: #ee2d20;
+  }
 }
 
 .checkin-button {
   background-color: #1dc7ea;
   border-color: #1dc7ea;
   &:hover {
+    background-color: lighten(#1dc7ea, 8%);
+    border-color: lighten(#1dc7ea, 8%);
+  }
+  &:focus {
     background-color: lighten(#1dc7ea, 8%);
     border-color: lighten(#1dc7ea, 8%);
   }

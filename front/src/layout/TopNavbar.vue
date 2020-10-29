@@ -17,15 +17,20 @@
       </button>
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+          <li class="nav-item" v-if="isLoggedIn">
             <span class="username">
               <i class="nc-icon nc-single-02 picto" />
               {{ username }}
             </span>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="isLoggedIn">
             <a href="#" class="nav-link" @click.prevent="handleLogout">
               Log out
+            </a>
+          </li>
+          <li class="nav-item" v-if="!isLoggedIn">
+            <a href="#" class="nav-link" @click.prevent="handleRedirect">
+              Log in
             </a>
           </li>
         </ul>
@@ -44,6 +49,9 @@ export default {
       const { name } = this.$route;
       return this.capitalizeFirstLetter(name);
     },
+    isLoggedIn() {
+      return !!Cookies.get("token");
+    }
   },
   data() {
     return {
@@ -71,6 +79,9 @@ export default {
       Cookies.remove('token');
       this.$router.push('signup');
     },
+    handleRedirect() {
+      this.$router.push('signin');
+    }
   },
 
   async beforeMount() {
