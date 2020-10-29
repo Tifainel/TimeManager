@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <drop-down-teams :setSelectedId="setSelectedId"></drop-down-teams>
+      <drop-down-teams :setSelectedId="setSelectedId" v-if="role == 2 || role == 3"></drop-down-teams>
 
       <div class="row">
         <div class="col-md-4">
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 import WorkingTimesTable from "../components/WorkingTimes/WorkingTimesTable";
 import AddWorkingTime from "../components/WorkingTimes/AddWorkingTime";
 import ChartManager from "../components/Charts/ChartManager";
@@ -44,7 +46,8 @@ export default {
 
   data() {
     return {
-      selectedUserId: ""
+      selectedUserId: "",
+      role: ""
     };
   },
   methods: {
@@ -54,6 +57,10 @@ export default {
     setSelectedId(id) {
       this.selectedUserId = id.toString();
     }
+  },
+  mounted() {
+    const token = Cookies.get("token");
+    this.role = jwt_decode(token).role;
   }
 };
 </script>
