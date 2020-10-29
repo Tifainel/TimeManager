@@ -7,7 +7,6 @@
         </h4>
       </template>
       <base-input
-        class="lol"
         type="number"
         min="1"
         label="On the last ... days"
@@ -16,13 +15,13 @@
       >
       </base-input>
       <line-chart
-        class="line-chart"
-        id="line"
+        id="chart_issue_24"
         :data="lineData"
-        line-colors='[ "#FF6384", "#36A2EB" ]'
+        xkey="date"
         resize="true"
-        xkey="year"
-        ykeys='[ "a", "b" ]'
+        ykeys='["timeWorked", "scheduledTime"]'
+        labels='["Time worked", "Scheduled time"]'
+        lineColors='[ "#FF6384", "#36A2EB" ]'
       >
       </line-chart>
     </card>
@@ -43,10 +42,11 @@ export default {
     return {
       nbDays: 7,
       lineData: [
-        { year: '2013', a: 10, b: 5 },
-        { year: '2014', a: 40, b: 15 },
-        { year: '2015', a: 20, b: 25 },
-        { year: '2016', a: 30, b: 20 },
+        { date: '2020-02-01', timeWorked: 10, scheduledTime: 5 },
+        { date: '2020-02-02', timeWorked: 40, scheduledTime: 15 },
+        { date: '2020-02-03', timeWorked: 20, scheduledTime: 25 },
+        { date: '2020-02-04', timeWorked: 30, scheduledTime: 20 },
+        { date: '2020-02-05', timeWorked: 30, scheduledTime: 20 },
       ],
     };
   },
