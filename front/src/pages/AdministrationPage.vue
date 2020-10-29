@@ -94,7 +94,6 @@ export default {
             username: this.user.username,
             role: this.selectedRole.id
           };
-          console.log(body);
           const updated = await updateUserById(this.user.id, body);
           if (!updated.error) {
             this.formError = "";

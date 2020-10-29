@@ -2,7 +2,7 @@
   <div class="content">
     <div class="container-fluid">
         <drop-down-teams :setSelectedId="setSelectedId"></drop-down-teams>
-        <working-times-table :mini="false" :selectedUserId="selectedUserId"></working-times-table>
+        <working-times-table :mini="false" :selectedUserId="selectedUserId" :key="selectedUserId"></working-times-table>
     </div>
   </div>
 </template>

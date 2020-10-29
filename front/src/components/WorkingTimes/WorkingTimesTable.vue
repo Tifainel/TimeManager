@@ -109,7 +109,6 @@ export default {
         now.toISOString(),
         endDate.toISOString(),
       );
-      console.log(workingTimes)
       const workingtimetable = [];
       for (const time in workingTimes) {
         const dateStart = new Date(workingTimes[time].start);
@@ -153,9 +152,9 @@ export default {
   mounted() {
     if(!this.selectedUserId) {
       const token = Cookies.get('token');
-      this.selectedUserId = jwt_decode(token).id;
+      this.userId = jwt_decode(token).id;
     } else {
-      this.userId = this.selectedId;
+      this.userId = this.selectedUserId;
     }
     this.affectWorkingTimes();
   },
