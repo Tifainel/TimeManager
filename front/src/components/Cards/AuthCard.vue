@@ -6,7 +6,7 @@
       id="card-title"
       v-if="connexion == true"
     >
-      Connexion
+      Connection
     </h4>
     <h4
       slot="header"
@@ -148,6 +148,7 @@ export default {
 .row {
   display: flex;
   justify-content: center;
+  text-align: start;
 }
 .class {
   min-width: 40%;

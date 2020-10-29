@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Dashboard</a>
+      <p class="navbar-brand">{{ routeName }}</p>
       <button
         type="button"
         class="navbar-toggler navbar-toggler-right"
@@ -18,6 +18,12 @@
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
+            <span class="username">
+              <i class="nc-icon nc-single-02 picto" />
+              {{ username }}
+            </span>
+          </li>
+          <li class="nav-item">
             <a href="#" class="nav-link" @click.prevent="handleLogout">
               Log out
             </a>
@@ -29,6 +35,8 @@
 </template>
 <script>
 import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import { getUserById } from '../api_wrapper/users/users';
 
 export default {
   computed: {
@@ -40,6 +48,7 @@ export default {
   data() {
     return {
       activeNotifications: false,
+      username: '',
     };
   },
   methods: {
@@ -63,6 +72,22 @@ export default {
       this.$router.push('signup');
     },
   },
+
+  async beforeMount() {
+    const token = Cookies.get('token');
+    const userId = jwt_decode(token).id;
+    const user = await getUserById(userId);
+    this.username = this.capitalizeFirstLetter(user.username);
+  },
 };
 </script>
-<style></style>
+<style>
+.picto {
+  margin-right: 5px;
+}
+.username {
+  display: flex;
+  align-items: center;
+  color: #1dc7ea;
+}
+</style>

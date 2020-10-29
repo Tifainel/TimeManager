@@ -77,17 +77,17 @@ const routes = [
       },
       {
         path: 'user',
-        name: 'User',
+        name: 'User profile',
         component: User,
       },
       {
         path: 'workingtimes',
-        name: 'WorkingTimes',
+        name: 'My working times',
         component: WorkingTimes,
       },
       {
         path: 'teams',
-        name: 'Teams',
+        name: 'My teams',
         beforeEnter: managerGuard,
         component: TeamsPage,
       },
