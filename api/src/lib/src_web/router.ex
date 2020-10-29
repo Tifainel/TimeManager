@@ -138,6 +138,11 @@ defmodule SrcWeb.Router do
     #Get DayNightData
     get "/chartmanager/daynightdata/:user_id/:days", ChartManagerController, :day_night_data
 
+    #Get TimePerDays
+    get "/chartmanager/timeperdays/:user_id/:days", ChartManagerController, :time_per_days
+
+    #Get TimePerDays
+    get "/chartmanager/timeperdays/:user_id/:days/scheduled", ChartManagerController, :time_per_days_scheduled
 
     #default
     # resources "/users", UserController, except: [:new, :edit]

@@ -28,7 +28,17 @@
 }
 ```
 
-3. **POST /users :**
+3. **GET /users/signin?username=myuser&password=mypass :**
+*Check if username and password matches*.
+
+    * Response body :
+```json
+  {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInJvbGUiOjEsInNjb3BlIjoidXNlciJ9.FiXmfp2qaV3fEoSi5flxTYOQNo-bKy5Us2RN6SzlaxQ"
+}
+```
+
+4. **POST /users :**
 *Adds one user*.
 
 |Parameter|Type|Description|
@@ -60,7 +70,7 @@
 }
 ```
 
-4. **PUT /users/:userID :**
+5. **PUT /users/:userID :**
 *Editing an user using their user id*.
 
 |Parameter|Type|Description|
@@ -91,7 +101,7 @@
 }
 ```
 
-5. **DELETE /users/:userID :**
+6. **DELETE /users/:userID :**
 *Deletes an user using their user id*.
 
 ## /workingtimes route
@@ -564,3 +574,97 @@
 
 7. **DELETE /teams/:teamID :**
 *Delete a team using its team id*.
+
+## /chartmanager/daynightdata route
+
+1. **GET /chartmanager/daynightdata/:userID/:days :**
+*Get cumulated day / night worked time in seconds*
+
+    * Response body :
+```json
+{
+    "totalDay": 14400,
+    "totalNight": 57600
+}
+```
+
+2. **GET /chartmanager/timeperdays/:userID/:days :**
+*Get cumulated time per days*
+
+    * Response body :
+```json
+[
+    {
+        "day": "2020-10-22",
+        "time": 59790
+    },
+    {
+        "day": "2020-10-23",
+        "time": 12209
+    },
+    {
+        "day": "2020-10-24",
+        "time": 45390
+    },
+    {
+        "day": "2020-10-25",
+        "time": 0
+    },
+    {
+        "day": "2020-10-26",
+        "time": 0
+    },
+    {
+        "day": "2020-10-27",
+        "time": 0
+    },
+    {
+        "day": "2020-10-28",
+        "time": 0
+    }
+]
+```
+
+3. **GET /chartmanager/timeperdays/:userID/:days/scheduled :**
+*Get cumulated time per days and scheduled working time*
+
+    * Response body :
+```json
+[
+    {
+        "day": "2020-10-22",
+        "scheduled": 39599,
+        "time": 59790
+    },
+    {
+        "day": "2020-10-23",
+        "scheduled": 50400,
+        "time": 12209
+    },
+    {
+        "day": "2020-10-24",
+        "scheduled": 0,
+        "time": 45390
+    },
+    {
+        "day": "2020-10-25",
+        "scheduled": 0,
+        "time": 0
+    },
+    {
+        "day": "2020-10-26",
+        "scheduled": 0,
+        "time": 0
+    },
+    {
+        "day": "2020-10-27",
+        "scheduled": 0,
+        "time": 0
+    },
+    {
+        "day": "2020-10-28",
+        "scheduled": 0,
+        "time": 0
+    }
+]
+```
