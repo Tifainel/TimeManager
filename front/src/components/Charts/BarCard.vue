@@ -22,7 +22,7 @@
         :data="barData"
         bar-colors='[ "#36A2EB" ]'
         resize="true"
-        xkey="days"
+        xkey="day"
         labels='[ "Hours" ]'
         ykeys='[ "time"]'
       >
@@ -32,41 +32,55 @@
 </template>
 
 <script>
-import Raphael from 'raphael/raphael';
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import Raphael from "raphael/raphael";
 global.Raphael = Raphael;
-
-import { BarChart } from 'vue-morris';
-import Card from '../Cards/Card';
+import { getTimePerDay } from "../../api_wrapper/charts/charts";
+import { BarChart } from "vue-morris";
+import Card from "../Cards/Card";
 
 export default {
-  name: 'BarCard',
+  name: "BarCard",
   components: { BarChart, Card },
+  props: {
+    selectedUserId: String
+  },
   data() {
     return {
       nbDays: 7,
-      barData: [
-        { days: '10/11/2020', time: 8 },
-        { days: '11/11/2020', time: 0 },
-        { days: '12/11/2020', time: 10 },
-        { days: '13/11/2020', time: 9 },
-        { days: '14/11/2020', time: 8 },
-        { days: '15/11/2020', time: 12 },
-        { days: '16/11/2020', time: 4 },
-      ],
+      barData: [],
+      userId: "",
     };
   },
 
   methods: {
     handleNbDaysChange() {
-      this.barData = [];
-      for (let i = 0; i < this.nbDays; i++) {
-        this.barData.push({
-          days: `${i + 1}/11/2020`,
-          time: Math.floor(Math.random() * 12),
-        });
-      }
+      this.getData();
     },
+    async getData() {
+      const data = await getTimePerDay(this.userId, this.nbDays);
+      if (data.error) {
+        this.available = false;
+      } else {
+        this.barData = data;
+        for (let i in this.barData) {
+          this.barData[i].time = Math.round(this.barData[i].time/3600);
+        }
+        this.available = true;
+        this.changed = !this.changed;
+      }
+    }
   },
+  mounted() {
+    if (!this.selectedUserId) {
+      const token = Cookies.get("token");
+      this.userId = jwt_decode(token).id;
+    } else {
+      this.userId = this.selectedUserId;
+    }
+    this.getData();
+  }
 };
 </script>
 <style scoped lang="scss">
