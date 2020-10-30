@@ -31,7 +31,7 @@ defmodule SrcWeb.Router do
     get "/clocks/:user_id", ClockController, :show
 
     #get last clock by user id
-    get "/clocks/last/:user_id", ClockController, :get_last_by_user_id
+    get "/clocks/:user_id/last", ClockController, :get_last_by_user_id
 
     #create with user id
     post "/clocks/:user_id", ClockController, :create

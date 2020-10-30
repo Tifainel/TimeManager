@@ -11,7 +11,7 @@ defmodule SrcWeb.TeamController do
     render(conn, "index.json", teams: teams)
   end
 
-  def create(conn, team_params) do
+  def create(conn,%{"team"=>team_params}) do
     #IO.inspect(team_params)
     with {:ok, %Team{} = team} <- Users.create_team(team_params) do
       conn

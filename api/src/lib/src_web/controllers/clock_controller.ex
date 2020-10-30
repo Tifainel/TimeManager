@@ -12,14 +12,14 @@ defmodule SrcWeb.ClockController do
     render(conn, "index.json", clocks: clocks)
   end
 
-  def create(conn, clock_params) do
+  def create(conn, %{"user_id"=>user_id, "clock"=>clock_params}) do
 
-    user_exists = Users.user_exists(clock_params["user_id"])
+    user_exists = Users.user_exists(user_id)
     if user_exists > 0 do
+      clock_params = Map.put(clock_params, "user_id", user_id)
       with {:ok, %Clock{} = clock} <- Time.create_clock(%{"clock"=>clock_params}) do
         conn
         |> put_status(:created)
-        #|> put_resp_header("location", Routes.clock_path(conn, :show, clock))
         |> render("show.json", clock: clock)
       end
     else

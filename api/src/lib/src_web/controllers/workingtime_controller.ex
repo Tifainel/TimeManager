@@ -12,9 +12,10 @@ defmodule SrcWeb.WorkingtimeController do
     render(conn, "index.json", workingtimes: workingtimes)
   end
 
-  def create(conn, workingtime_params) do
-    user_exists = Users.user_exists(workingtime_params["user_id"])
+  def create(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
+    user_exists = Users.user_exists(user_id)
     if user_exists == 1 do
+      workingtime_params = Map.put(workingtime_params, "user_id", user_id)
       with {:ok, %Workingtime{} = workingtime} <- Time.create_workingtime(workingtime_params) do
         conn
         |> put_status(:created)
