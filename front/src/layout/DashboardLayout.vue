@@ -60,7 +60,6 @@ export default {
   },
   computed: {
     isMobile() {
-      console.log(screen.width)
       if (screen.width <= 770) {
         return true;
       } else {

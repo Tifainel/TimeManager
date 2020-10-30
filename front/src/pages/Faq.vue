@@ -35,7 +35,7 @@ export default {
 }
 
 .faq-content {
-  width: 45%;
+  width: 75%;
   margin-left: 30px;
 }
 </style>

@@ -54,15 +54,6 @@ export default {
   components: {
     CheckInOutButton
   },
-  computed: {
-    isMobile() {
-      if (screen.width <= 760) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  },
   data() {
     return {
       role: ""

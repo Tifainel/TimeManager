@@ -32,11 +32,11 @@ module.exports = [
   {
     title: 'I work night shifts, how does the Time Manager deal with it ?',
     content:
-      'Night shifts are registered as easily as day shifts, however it is highlighted for you and your manager to see',
+      'Night shifts are registered as easily as day shifts, however it is highlighted for you and your manager to see.',
   },
   {
     title: 'Is this app accessible to people with disabilities ?',
     content:
-      'The is accessible to visually and hearing impaired people. If you face any accessibility issue using the app, feel free to voice your problem with us : contact.time-manager@gotham.com',
+      'The app is accessible to visually and hearing impaired people. If you face any accessibility issues using the app, feel free to voice your problem with us : contact.time-manager@gotham.com',
   },
 ];
