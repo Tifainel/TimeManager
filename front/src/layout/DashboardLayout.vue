@@ -35,14 +35,14 @@
 </template>
 
 <script>
-import TopNavbar from "./TopNavbar.vue";
-import ContentFooter from "./ContentFooter.vue";
-import DashboardContent from "./Content.vue";
-import MobileMenu from "./MobileMenu.vue";
-import CheckInOutButton from "../components/ChekInOutButton";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import BottomNavBar from "./BottomNavbar";
+import TopNavbar from './TopNavbar.vue';
+import ContentFooter from './ContentFooter.vue';
+import DashboardContent from './Content.vue';
+import MobileMenu from './MobileMenu.vue';
+import CheckInOutButton from '../components/ChekInOutButton';
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import BottomNavBar from './BottomNavbar';
 
 export default {
   components: {
@@ -51,11 +51,11 @@ export default {
     DashboardContent,
     MobileMenu,
     CheckInOutButton,
-    BottomNavBar
+    BottomNavBar,
   },
   data() {
     return {
-      role: ""
+      role: '',
     };
   },
   computed: {
@@ -65,20 +65,20 @@ export default {
       } else {
         return false;
       }
-    }
+    },
   },
   methods: {
     toggleSidebar() {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false);
       }
-    }
+    },
   },
 
   mounted() {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     this.role = jwt_decode(token).role;
-  }
+  },
 };
 </script>
 
