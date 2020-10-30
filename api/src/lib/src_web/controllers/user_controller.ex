@@ -6,9 +6,18 @@ defmodule SrcWeb.UserController do
 
   action_fallback SrcWeb.FallbackController
 
-  def index(conn, params) do
+  def get_user_by_username_email(conn, params) do
     user = Users.get_user_by_email_and_username(params)
-    render(conn, "user.json", user: user)
+
+    if user !== nil do
+      conn
+      |> put_status(:ok)
+      |> render("user.json", user: user)
+    else
+      conn
+      |> put_status(:not_found)
+      |> json(%{"Error"=>"User not found."})
+    end
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -30,7 +39,6 @@ defmodule SrcWeb.UserController do
 
   def sign_in(conn, params) do
     user = Users.check_user_password(params)
-    IO.inspect(user == nil)
     if user == nil do
       conn
       |> put_status(:forbidden)
