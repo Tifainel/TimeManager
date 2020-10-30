@@ -10,6 +10,7 @@
         aria-expanded="false"
         aria-label="Toggle navigation"
         @click="toggleSidebar"
+        v-if="!isMobile"
       >
         <span class="navbar-toggler-bar burger-lines"></span>
         <span class="navbar-toggler-bar burger-lines"></span>
@@ -35,15 +36,20 @@
           </li>
         </ul>
       </div>
+      <check-in-out-button style="width: 40%; margin-top: 0px" v-if="isMobile && isLoggedIn"></check-in-out-button>
     </div>
   </nav>
 </template>
 <script>
-import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
-import { getUserById } from '../api_wrapper/users/users';
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import { getUserById } from "../api_wrapper/users/users";
+import CheckInOutButton from "../components/ChekInOutButton";
 
 export default {
+  components: {
+    CheckInOutButton
+  },
   computed: {
     routeName() {
       const { name } = this.$route;
@@ -51,12 +57,19 @@ export default {
     },
     isLoggedIn() {
       return !!Cookies.get("token");
+    },
+    isMobile() {
+      if (screen.width <= 760) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   data() {
     return {
       activeNotifications: false,
-      username: '',
+      username: ""
     };
   },
   methods: {
@@ -76,20 +89,20 @@ export default {
       this.$sidebar.displaySidebar(false);
     },
     handleLogout() {
-      Cookies.remove('token');
-      this.$router.push('signup');
+      Cookies.remove("token");
+      this.$router.push("signup");
     },
     handleRedirect() {
-      this.$router.push('signin');
+      this.$router.push("signin");
     }
   },
 
   async beforeMount() {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     const userId = jwt_decode(token).id;
     const user = await getUserById(userId);
     this.username = this.capitalizeFirstLetter(user.username);
-  },
+  }
 };
 </script>
 <style>

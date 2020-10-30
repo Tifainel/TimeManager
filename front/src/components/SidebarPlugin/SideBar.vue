@@ -2,7 +2,7 @@
   <div class="sidebar" :style="sidebarStyle" :data-color="backgroundColor">
     <div class="sidebar-wrapper">
       <div class="logo">
-        <a href="#" class="simple-text logo__container">
+        <a href="#/dashboard" class="simple-text logo__container">
           <div class="logo-img">
             <img src="img/batman.png" alt="" />
           </div>

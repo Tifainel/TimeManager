@@ -19,7 +19,6 @@
 </template>
 <script>
 import EditProfileForm from '../components/UserProfile/EditProfileForm';
-import UserCard from '../components/UserProfile/UserCard.vue';
 import DeleteProfile from 'src/components/UserProfile/DeleteProfile';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
@@ -33,7 +32,6 @@ export default {
   name: 'User',
   components: {
     EditProfileForm,
-    UserCard,
     DeleteProfile
   },
 
