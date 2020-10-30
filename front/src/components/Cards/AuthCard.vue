@@ -71,10 +71,12 @@
         </button>
       </div>
       <div class="msg" v-if="connexion">
-        Want to create an account ? <a href="/#/signup">Sign up here</a>
+        Want to create an account ?
+        <a href="/#/signup">Sign up here</a>
       </div>
       <div class="msg" v-else>
-        Already have an account ? <a href="/#/signin">Sign in here</a>
+        Already have an account ?
+        <a href="/#/signin">Sign in here</a>
       </div>
     </form>
   </card>
@@ -111,7 +113,9 @@ export default {
       );
     },
     isEmailValid() {
-      return this.user.email.match(/([a-zA-Z0-9\.\-\_]*)@[a-zA-Z0-9\.\-]*\.[a-zA-Z]{​1,3}​/g);
+      return this.user.email.match(
+        /([a-zA-Z0-9\.\-\_]*)@[a-zA-Z0-9\.\-]*\.[a-zA-Z]{1,3}/g,
+      );
     },
     isSigninFormValid() {
       return this.user.username != '' && this.user.password != '';
@@ -123,7 +127,7 @@ export default {
           this.formError = 'All fields must be filled';
           return;
         }
-        if(!this.isEmailValid()) {
+        if (!this.isEmailValid()) {
           this.formError = 'The email is incorrect';
           return;
         }

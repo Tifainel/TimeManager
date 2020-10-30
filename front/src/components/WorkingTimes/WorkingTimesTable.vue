@@ -3,10 +3,7 @@
     <transition name="modal" v-if="showModal">
       <div class="modal-mask">
         <div class="modal-wrapper">
-          <div
-            class="modal-container"
-            v-bind:id="isMobile ? 'mobile-modal' : ''"
-          >
+          <div class="modal-container" :class="isMobile ? 'mobile-modal' : ''">
             <add-working-time
               :affectWorkingTimes="affectWorkingTimes"
               :switchModal="switchModal"
@@ -57,29 +54,29 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import Card from "../Cards/Card";
-import LTable from "src/components/Table";
-import AddWorkingTime from "./AddWorkingTime";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import Card from '../Cards/Card';
+import LTable from 'src/components/Table';
+import AddWorkingTime from './AddWorkingTime';
 import {
   getAllWorkingTimesByUserId,
-  deleteWorkingtimeById
-} from "../../api_wrapper/workingtimes/workingtime";
+  deleteWorkingtimeById,
+} from '../../api_wrapper/workingtimes/workingtime';
 
 export default {
-  name: "WorkingTimesTable",
+  name: 'WorkingTimesTable',
   components: {
     Card,
     LTable,
-    AddWorkingTime
+    AddWorkingTime,
   },
   props: {
     mini: {
       type: Boolean,
-      required: true
+      required: true,
     },
-    selectedUserId: String
+    selectedUserId: String,
   },
   computed: {
     isMobile() {
@@ -88,26 +85,26 @@ export default {
       } else {
         return false;
       }
-    }
+    },
   },
   data() {
     return {
-      userId: "",
+      userId: '',
       workingTimes: [],
-      tableColumns: ["Start", "End", "Actions"],
+      tableColumns: ['Start', 'End', 'Actions'],
       showModal: false,
-      selectedId: String
+      selectedId: String,
     };
   },
 
   methods: {
     formatDates(date) {
-      return `${date.toLocaleDateString("fr-FR")} at ${date.toLocaleTimeString(
-        "fr-FR",
+      return `${date.toLocaleDateString('fr-FR')} at ${date.toLocaleTimeString(
+        'fr-FR',
         {
-          hour: "2-digit",
-          minute: "2-digit"
-        }
+          hour: '2-digit',
+          minute: '2-digit',
+        },
       )}`;
     },
 
@@ -119,7 +116,7 @@ export default {
       const workingTimes = await getAllWorkingTimesByUserId(
         this.userId,
         now.toISOString(),
-        endDate.toISOString()
+        endDate.toISOString(),
       );
       const workingtimetable = [];
       for (const time in workingTimes) {
@@ -143,9 +140,10 @@ export default {
     handleEdit(id) {
       this.selectedId = id.toString();
       this.showModal = true;
+      window.scrollTo(0, 0);
     },
     handleDelete(workingtimeId) {
-      if (confirm("Do you really want to delete this working time ?")) {
+      if (confirm('Do you really want to delete this working time ?')) {
         this.deleteWorkingTime(workingtimeId);
       }
     },
@@ -158,18 +156,18 @@ export default {
     },
     switchModal() {
       this.showModal = !this.showModal;
-    }
+    },
   },
 
   mounted() {
     if (!this.selectedUserId) {
-      const token = Cookies.get("token");
+      const token = Cookies.get('token');
       this.userId = jwt_decode(token).id;
     } else {
       this.userId = this.selectedUserId;
     }
     this.affectWorkingTimes();
-  }
+  },
 };
 </script>
 
@@ -211,5 +209,8 @@ export default {
 
 .modal-body {
   margin: 20px 0;
+}
+.mobile-modal {
+  width: 95%;
 }
 </style>

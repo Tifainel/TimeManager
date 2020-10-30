@@ -6,6 +6,8 @@ function resolveSrc(_path) {
 }
 
 module.exports = {
+  baseUrl: '',
+  publicPath: '',
   outputDir:
     process.env.OUTPUT_DIR || path.resolve(__dirname, '../api/src/priv/static'),
   lintOnSave: false,
