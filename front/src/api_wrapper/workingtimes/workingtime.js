@@ -1,14 +1,14 @@
-import config from "../../config.json";
+import config from '../../config.json';
 
 export async function getAllWorkingTimesByUserId(userId, start, end) {
   try {
     const workingtimes = await fetch(
       `${config.api_url}/workingtimes/${userId}?start=${start}&end=${end} `,
       {
-        method: "GET"
-      }
+        method: 'GET',
+      },
     );
-    return (await workingtimes.json());
+    return await workingtimes.json();
   } catch (e) {
     return { error: e };
   }
@@ -19,10 +19,10 @@ export async function getOneWorkingTimeByUserId(userId, workingtimeID) {
     const workingtime = await fetch(
       `${config.api_url}/workingtimes/${userId}/${workingtimeID}`,
       {
-        method: "GET"
-      }
+        method: 'GET',
+      },
     );
-    return (await workingtime.json());
+    return await workingtime.json();
   } catch (e) {
     return { error: e };
   }
@@ -30,17 +30,22 @@ export async function getOneWorkingTimeByUserId(userId, workingtimeID) {
 
 export async function createWorkingtime(userId, start, end) {
   try {
-    const workingtime = await fetch(`${config.api_url}/workingtimes/${userId}`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
+    const workingtime = await fetch(
+      `${config.api_url}/workingtimes/${userId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({
+          workingtime: {
+            start: start,
+            end: end,
+          },
+        }),
       },
-      body: JSON.stringify({
-        start: start,
-        end: end
-      })
-    });
-    return { res: "success" };
+    );
+    return { res: 'success' };
   } catch (e) {
     return { error: e };
   }
@@ -51,16 +56,16 @@ export async function updateWorkingtimeById(workingtimeID, data) {
     const workingtime = await fetch(
       `${config.api_url}/workingtimes/${workingtimeID}`,
       {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-type": "application/json; charset=UTF-8"
+          'Content-type': 'application/json; charset=UTF-8',
         },
         body: JSON.stringify({
-          workingtime: { start: data.start, end: data.end }
-        })
-      }
+          workingtime: { start: data.start, end: data.end },
+        }),
+      },
     );
-    return { res: "success" };
+    return { res: 'success' };
   } catch (e) {
     return { error: e };
   }
@@ -71,10 +76,10 @@ export async function deleteWorkingtimeById(workingtimeID) {
     const user = await fetch(
       `${config.api_url}/workingtimes/${workingtimeID}`,
       {
-        method: "DELETE"
-      }
+        method: 'DELETE',
+      },
     );
-    return { res: "success" };
+    return { res: 'success' };
   } catch (e) {
     return { error: e };
   }
