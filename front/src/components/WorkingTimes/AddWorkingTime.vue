@@ -76,7 +76,7 @@ export default {
     },
     add: Boolean,
     selectedId: String,
-    selectedUserId: String
+    selectedUserId: String,
   },
   data() {
     return {
@@ -106,10 +106,8 @@ export default {
         return;
       }
       this.formError = '';
-      const start = new Date(
-        `${this.dates.startDate} ${this.dates.startTime}:00`,
-      );
-      const end = new Date(`${this.dates.endDate} ${this.dates.endTime}:00`);
+      const start = new Date(`${this.dates.startDate} ${this.dates.startTime}`);
+      const end = new Date(`${this.dates.endDate} ${this.dates.endTime}`);
       if (start > end) {
         this.formError = 'Start date and time must be before end date and time';
         return;
@@ -180,10 +178,10 @@ export default {
 
   beforeMount() {
     if (!this.selectedUserId) {
-    const token = Cookies.get('token');
-    this.userId = jwt_decode(token).id;
+      const token = Cookies.get('token');
+      this.userId = jwt_decode(token).id;
     } else {
-      this.userId = this.selectedUserId
+      this.userId = this.selectedUserId;
     }
   },
 };
