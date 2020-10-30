@@ -2,10 +2,10 @@ import config from '../../config.json';
 
 export async function getLastClockbyUserId(userId) {
   try {
-    const clock = await fetch(`${config.api_url}/clocks/last/${userId}`, {
+    const clock = await fetch(`${config.api_url}/clocks/${userId}/last`, {
       method: 'GET',
     });
-    return (await clock.json());
+    return await clock.json();
   } catch (e) {
     return { error: e };
   }
@@ -19,7 +19,10 @@ export async function createClock(userId, data) {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
-        time: data.time, status: data.status
+        clock: {
+          time: data.time,
+          status: data.status,
+        },
       }),
     });
     return { res: 'success' };
@@ -27,4 +30,3 @@ export async function createClock(userId, data) {
     return { error: e };
   }
 }
-
