@@ -24,6 +24,17 @@
           </base-input>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-6">
+          <base-input
+            type="password"
+            label="Password"
+            placeholder="Password"
+            v-model="user.password"
+          >
+          </base-input>
+        </div>
+      </div>
       <p class="form-error text-center">{{ formError }}</p>
       <div class="text-center">
         <button
@@ -66,7 +77,8 @@ export default {
     return {
       user: {
         username: "",
-        email: ""
+        email: "",
+        password: "",
       },
       formError: ""
     };

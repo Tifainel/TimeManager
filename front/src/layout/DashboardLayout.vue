@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper">
     <side-bar>
-      <mobile-menu slot="content"></mobile-menu>
       <sidebar-link to="/dashboard">
         <i class="nc-icon nc-chart-pie-35"></i>
         <p>Dashboard</p>
@@ -30,18 +29,20 @@
       <dashboard-content @click="toggleSidebar"> </dashboard-content>
 
       <content-footer></content-footer>
+      <bottom-nav-bar v-if="isMobile"></bottom-nav-bar>
     </div>
   </div>
 </template>
 
 <script>
-import TopNavbar from './TopNavbar.vue';
-import ContentFooter from './ContentFooter.vue';
-import DashboardContent from './Content.vue';
-import MobileMenu from './MobileMenu.vue';
-import CheckInOutButton from '../components/ChekInOutButton';
-import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
+import TopNavbar from "./TopNavbar.vue";
+import ContentFooter from "./ContentFooter.vue";
+import DashboardContent from "./Content.vue";
+import MobileMenu from "./MobileMenu.vue";
+import CheckInOutButton from "../components/ChekInOutButton";
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import BottomNavBar from "./BottomNavbar";
 
 export default {
   components: {
@@ -50,24 +51,35 @@ export default {
     DashboardContent,
     MobileMenu,
     CheckInOutButton,
+    BottomNavBar
   },
   data() {
     return {
-      role: '',
+      role: ""
     };
+  },
+  computed: {
+    isMobile() {
+      console.log(screen.width)
+      if (screen.width <= 770) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     toggleSidebar() {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false);
       }
-    },
+    }
   },
 
   mounted() {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     this.role = jwt_decode(token).role;
-  },
+  }
 };
 </script>
 
