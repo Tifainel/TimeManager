@@ -36,7 +36,9 @@ import { getUserById } from "../../api_wrapper/users/users";
 export default {
   name: "ModifyMembers",
   components: { Card, BaseDropDown, TeamMemberCard },
-
+  props: {
+    affectChange: Function
+  },
   data() {
     return {
       userId: "",
@@ -76,6 +78,7 @@ export default {
         }
       }
       modifyTeam(this.selectedTeam.id, this.selectedTeam);
+      this.affectChange();
     }
   },
 

@@ -18,6 +18,7 @@
             :mini="true"
             :selectedUserId="selectedUserId"
             :key="selectedUserId"
+            style="padding: 0px"
           ></working-times-table>
         </div>
       </div>

@@ -94,5 +94,6 @@ a {
 }
 .drop-down {
   width: 200px;
+  background-color: white;
 }
 </style>

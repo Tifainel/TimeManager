@@ -5,7 +5,7 @@
         <create-team :affectChange="affectChange"></create-team>
       </div>
       <div class="col-sm-6">
-        <modify-members :key="changed"></modify-members>
+        <modify-members :key="changed" :affectChange="affectChange"></modify-members>
       </div>
     </div>
     <div class="row">
