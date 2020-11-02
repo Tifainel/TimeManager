@@ -76,16 +76,20 @@ defmodule SrcWeb.ChartManagerController do
   defp loop_for_every_day(user_id, days) do
     todayDate = Date.utc_today()
     minDate = Date.add(todayDate, - String.to_integer(days))
-
     timeperdays = []
     loopDate = minDate
     i = 0
     #while start
-    {loopDate, timeperdays, i} = while {loopDate, timeperdays, i}, loopDate < todayDate do
+    IO.inspect("ce langage est de la merde")
+    {loopDate, timeperdays, i} = while {loopDate, timeperdays, i}, Date.diff(loopDate, todayDate) < 0 do
+      IO.inspect("ce langage est de la merde")
 
       minDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T00:00:00.000000Z")
       maxDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T23:59:59.000000Z")
 
+
+      IO.inspect(minDate)
+      IO.inspect(maxDate)
       # IO.inspect()
       day = ChartManager.get_daytime_data(user_id, minDate, maxDate)
       IO.inspect(day)
@@ -168,7 +172,7 @@ defmodule SrcWeb.ChartManagerController do
     loopDate = minDate
     i = 0
     #while start
-    {loopDate, timeperdays, i} = while {loopDate, timeperdays, i}, loopDate < todayDate do
+    {loopDate, timeperdays, i} = while {loopDate, timeperdays, i}, Date.diff(loopDate, todayDate) < 0 do
 
       minDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T00:00:00.000000Z")
       maxDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T23:59:59.000000Z")
@@ -196,7 +200,7 @@ defmodule SrcWeb.ChartManagerController do
     end #while end
     total
   end
-  #
+
   defp calculate_workingtime(loopDate, min, max, counter, total) do
     if loopDate[:start] > min do
       if loopDate[:end] < max do
