@@ -85,6 +85,7 @@
 <script>
 import { createUser, signin } from '../../api_wrapper/users/users';
 import Cookies from 'js-cookie';
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: 'AuthCard',
@@ -121,6 +122,10 @@ export default {
       return this.user.username != '' && this.user.password != '';
     },
     async signupUser() {
+      if (getConnexionType() === 'none') {
+        this.formError = "You must be connected to the Internet to sign up"
+        return;
+      }
       if (!this.connexion) {
         this.formError = '';
         if (!this.isSignupFormValid()) {
@@ -141,6 +146,10 @@ export default {
       }
     },
     async signinUser() {
+      if (getConnexionType() === 'none') {
+        this.formError = "You must be connected to the Internet to sign in"
+        return;
+      }
       this.formError = '';
       if (!this.isSigninFormValid()) {
         this.formError = 'All fields must be filled';

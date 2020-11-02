@@ -29,6 +29,7 @@ import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import Card from 'src/components/Cards/Card.vue';
 import { createTeam } from '../../api_wrapper/teams/teams';
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: 'CreateTeam',
@@ -47,6 +48,10 @@ export default {
   },
   methods: {
     async createTeam() {
+      if (getConnexionType() === 'none') {
+        alert("Oops ! You must be connected to the Internet to use this feature");
+        return;
+      }
       if (!this.name) {
         this.formError = 'You must add a name';
         return;

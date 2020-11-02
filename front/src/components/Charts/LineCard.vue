@@ -43,6 +43,7 @@ global.Raphael = Raphael;
 import { getWorkingTimeAndClocked } from "../../api_wrapper/charts/charts";
 import { LineChart } from "vue-morris";
 import Card from "../Cards/Card";
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: "LineCard",
@@ -61,6 +62,12 @@ export default {
   },
   methods: {
     handleNbDaysChange() {
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
+        return;
+      }
       this.getData();
     },
     async getData() {

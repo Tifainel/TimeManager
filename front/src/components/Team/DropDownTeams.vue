@@ -23,6 +23,7 @@ import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
 import { getTeamsbyManagerId, modifyTeam } from "../../api_wrapper/teams/teams";
 import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getUserById } from "../../api_wrapper/users/users";
+import { getConnexionType } from '../../helpers/getConnexionType';
 
 export default {
   name: "DropDownTeams",
@@ -53,6 +54,12 @@ export default {
       this.loaded = true;
     },
     setSelected(member) {
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
+        return;
+      }
       if (!member) {
         this.setSelectedId(this.userId);
         this.selectedName = "Me";

@@ -51,44 +51,45 @@
 </template>
 
 <script>
-import Card from 'src/components/Cards/Card';
-import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
+import Card from "src/components/Cards/Card";
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
 import {
   createWorkingtime,
   updateWorkingtimeById,
-  getOneWorkingTimeByUserId,
-} from '../../api_wrapper/workingtimes/workingtime';
+  getOneWorkingTimeByUserId
+} from "../../api_wrapper/workingtimes/workingtime";
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
-  name: 'AddWorkingTime',
+  name: "AddWorkingTime",
   components: {
-    Card,
+    Card
   },
 
   props: {
     affectWorkingTimes: {
       type: Function,
-      required: true,
+      required: true
     },
     switchModal: {
-      type: Function,
+      type: Function
     },
     add: Boolean,
     selectedId: String,
-    selectedUserId: String,
+    selectedUserId: String
   },
   data() {
     return {
       dates: {
-        startDate: '',
-        endDate: '',
-        startTime: '',
-        endTime: '',
+        startDate: "",
+        endDate: "",
+        startTime: "",
+        endTime: ""
       },
-      formError: '',
-      formSuccess: '',
-      userId: String,
+      formError: "",
+      formSuccess: "",
+      userId: String
     };
   },
   methods: {
@@ -102,45 +103,57 @@ export default {
     },
     checkForm() {
       if (!this.isFormValid()) {
-        this.formError = 'All fields must be filled';
+        this.formError = "All fields must be filled";
         return;
       }
-      this.formError = '';
+      this.formError = "";
       const start = new Date(`${this.dates.startDate} ${this.dates.startTime}`);
       const end = new Date(`${this.dates.endDate} ${this.dates.endTime}`);
       if (start > end) {
-        this.formError = 'Start date and time must be before end date and time';
+        this.formError = "Start date and time must be before end date and time";
         return;
       }
       return {
         start: this.getCorrectedDate(start),
-        end: this.getCorrectedDate(end),
+        end: this.getCorrectedDate(end)
       };
     },
     async createForm() {
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
+        return;
+      }
       const isChecked = this.checkForm();
       if (isChecked) {
         const created = await createWorkingtime(
           this.userId,
           isChecked.start,
-          isChecked.end,
+          isChecked.end
         );
         if (created.error) {
-          this.formError = 'An error has occured';
+          this.formError = "An error has occured";
         } else {
-          this.formSuccess = 'This worktime has been created';
+          this.formSuccess = "This worktime has been created";
           this.affectWorkingTimes();
         }
       }
     },
     async updateForm() {
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
+        return;
+      }
       const isChecked = this.checkForm();
       if (isChecked) {
         const updated = await updateWorkingtimeById(this.selectedId, isChecked);
         if (updated.error) {
-          this.formError = 'An error has occured';
+          this.formError = "An error has occured";
         } else {
-          this.formSuccess = 'This worktime has been updated';
+          this.formSuccess = "This worktime has been updated";
           this.affectWorkingTimes();
           this.switchModal();
         }
@@ -149,14 +162,14 @@ export default {
     async getSelectedWorkingTime() {
       const selectedWorkingTime = await getOneWorkingTimeByUserId(
         this.userId,
-        this.selectedId,
+        this.selectedId
       );
       const startDate = new Date(selectedWorkingTime.start);
       const endDate = new Date(selectedWorkingTime.end);
-      this.dates.startDate = startDate.toISOString().split('T')[0];
-      this.dates.endDate = endDate.toISOString().split('T')[0];
-      this.dates.startTime = startDate.toLocaleTimeString('fr-FR');
-      this.dates.endTime = endDate.toLocaleTimeString('fr-FR');
+      this.dates.startDate = startDate.toISOString().split("T")[0];
+      this.dates.endDate = endDate.toISOString().split("T")[0];
+      this.dates.startTime = startDate.toLocaleTimeString("fr-FR");
+      this.dates.endTime = endDate.toLocaleTimeString("fr-FR");
     },
     // modifies the date to get the correct date after JSON.stringify
     getCorrectedDate(date) {
@@ -168,7 +181,7 @@ export default {
       correctedDate.setHours(hoursDiff);
       correctedDate.setMinutes(minutesDiff);
       return correctedDate;
-    },
+    }
   },
   mounted() {
     if (!this.add) {
@@ -178,12 +191,12 @@ export default {
 
   beforeMount() {
     if (!this.selectedUserId) {
-      const token = Cookies.get('token');
+      const token = Cookies.get("token");
       this.userId = jwt_decode(token).id;
     } else {
       this.userId = this.selectedUserId;
     }
-  },
+  }
 };
 </script>
 

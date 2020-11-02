@@ -45,6 +45,7 @@
           Update Profile
         </button>
       </div>
+      <p class="form-success text-center">{{ formSuccess }}</p>
       <div class="clearfix"></div>
     </form>
   </card>
@@ -54,6 +55,7 @@
 import Card from 'src/components/Cards/Card.vue';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
+import { getConnexionType } from '../../helpers/getConnexionType'
 
 export default {
   components: {
@@ -76,19 +78,29 @@ export default {
   data() {
     return {
       user: {
-        username: '',
-        email: '',
-        password: '',
+        username: "",
+        email: "",
+        password: ""
       },
-      formError: '',
+      formError: "",
+      formSuccess: ""
     };
   },
   methods: {
     async updateProfile() {
       const token = Cookies.get('token');
+      if (getConnexionType() === 'none') {
+        alert("Oops ! You must be connected to the Internet to use this feature");
+        return;
+      }
       if (this.isEmailValid()) {
-        this.formError = '';
-        this.updateUser(jwt_decode(token).id, this.user);
+        this.formError = "";
+        const updated = await this.updateUser(jwt_decode(token).id, this.user);
+        if (updated.error) {
+          this.formError = "An error has occured";
+        } else {
+          this.formSuccess = "Your profile has been updated";
+        }
       } else {
         this.formError = 'The email is incorrect';
       }

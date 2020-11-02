@@ -32,6 +32,7 @@ import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
 import { getTeamsbyManagerId, modifyTeam } from "../../api_wrapper/teams/teams";
 import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getUserById } from "../../api_wrapper/users/users";
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: "ModifyMembers",
@@ -65,6 +66,10 @@ export default {
       }
     },
     deleteMemberFromTeam(userId) {
+      if (getConnexionType() === 'none') {
+        alert("Oops ! You must be connected to the Internet to use this feature");
+        return;
+      }
       for (const member in this.selectedTeam.members) {
         if (userId == this.selectedTeam.members[member]) {
           this.selectedTeam.members.splice(member, 1);

@@ -28,7 +28,7 @@
 
       <dashboard-content @click="toggleSidebar"> </dashboard-content>
 
-      <content-footer></content-footer>
+      <content-footer v-if="!isMobile"></content-footer>
       <bottom-nav-bar v-if="isMobile"></bottom-nav-bar>
     </div>
   </div>
@@ -43,6 +43,7 @@ import CheckInOutButton from '../components/ChekInOutButton';
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import BottomNavBar from './BottomNavbar';
+import { getDeviceType } from '../helpers/getDeviceType'
 
 export default {
   components: {
@@ -60,11 +61,7 @@ export default {
   },
   computed: {
     isMobile() {
-      if (screen.width <= 770) {
-        return true;
-      } else {
-        return false;
-      }
+      return getDeviceType() === 'mobile';
     },
   },
   methods: {
