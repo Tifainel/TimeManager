@@ -1,12 +1,19 @@
 import config from '../../config.json';
+import { setMobileLocalStorage } from '../../helpers/localStorage';
+import { getConnexionType } from '../../helpers/getConnexionType';
 
 export async function getTeamsbyManagerId(userId) {
   try {
     const teams = await fetch(`${config.api_url}/teams/${userId}`, {
       method: 'GET',
     });
-    return await teams.json();
+    const res = await teams.json();
+    setMobileLocalStorage('teams', res);
+    return res;
   } catch (e) {
+    if (getConnexionType === 'none') {
+      return JSON.parse(window.localStorage.getItem('teams'));
+    }
     return { error: e };
   }
 }

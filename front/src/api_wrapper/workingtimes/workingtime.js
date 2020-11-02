@@ -1,4 +1,6 @@
 import config from '../../config.json';
+import { setMobileLocalStorage } from '../../helpers/localStorage';
+import { getConnexionType } from '../../helpers/getConnexionType';
 
 export async function getAllWorkingTimesByUserId(userId, start, end) {
   try {
@@ -8,8 +10,13 @@ export async function getAllWorkingTimesByUserId(userId, start, end) {
         method: 'GET',
       },
     );
-    return await workingtimes.json();
+    const res = await workingtimes.json();
+    setMobileLocalStorage('workingTimes', res);
+    return res;
   } catch (e) {
+    if (getConnexionType === 'none') {
+      return JSON.parse(window.localStorage.getItem('workingTimes'));
+    }
     return { error: e };
   }
 }

@@ -15,7 +15,9 @@
         @change="handleNbDaysChange"
       >
       </base-input>
-      <p v-if="!available" style="text-align: center">No data available at this time</p>
+      <p v-if="!available" style="text-align: center">
+        No data available at this time
+      </p>
       <donut-chart
         class="donut-chart"
         id="donut"
@@ -30,30 +32,30 @@
   </div>
 </template>
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import Raphael from "raphael/raphael";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import Raphael from 'raphael/raphael';
 global.Raphael = Raphael;
-import { getDayNightChart } from "../../api_wrapper/charts/charts";
-import { DonutChart } from "vue-morris";
-import Card from "../Cards/Card";
+import { getDayNightChart } from '../../api_wrapper/charts/charts';
+import { DonutChart } from 'vue-morris';
+import Card from '../Cards/Card';
 
 export default {
-  name: "DonutCard",
+  name: 'DonutCard',
   components: { DonutChart, Card },
   props: {
-    selectedUserId: String
+    selectedUserId: String,
   },
   data() {
     return {
-      userId: "",
+      userId: '',
       nbDays: 5,
       donutData: [
-        { label: "Day", value: 0 },
-        { label: "Night", value: 0 }
+        { label: 'Day', value: 0 },
+        { label: 'Night', value: 0 },
       ],
       changed: true,
-      available : false,
+      available: false,
     };
   },
   methods: {
@@ -65,22 +67,22 @@ export default {
       if (data.error) {
         this.available = false;
       } else {
-        this.donutData[0].value = data.totalDay / 3600;
-        this.donutData[1].value = data.totalNight / 3600;
+        this.donutData[0].value = Math.round(data.totalDay / 3600);
+        this.donutData[1].value = Math.round(data.totalNight / 3600);
         this.available = true;
         this.changed = !this.changed;
       }
-    }
+    },
   },
   async beforeMount() {
     if (!this.selectedUserId) {
-      const token = Cookies.get("token");
+      const token = Cookies.get('token');
       this.userId = jwt_decode(token).id;
     } else {
       this.userId = this.selectedUserId;
     }
     this.getData();
-  }
+  },
 };
 </script>
 <style scoped lang="scss">

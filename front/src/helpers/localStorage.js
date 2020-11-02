@@ -1,4 +1,4 @@
-import { getDeviceType } from './getDeviceTypes';
+import { getDeviceType } from './getDeviceType';
 
 export function setMobileLocalStorage(key, value) {
   if (getDeviceType() === 'mobile')
