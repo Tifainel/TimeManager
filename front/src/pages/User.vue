@@ -10,8 +10,13 @@
           >
           </edit-profile-form>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" v-if="!isMobile">
           <delete-profile :deleteUser="deleteUser"> </delete-profile>
+        </div>
+        <div class="col-md-3 text-center" v-if="isMobile">
+          <button  class="btn btn-info" @click.prevent="handleLogout">
+            <span class="no-icon">Log out</span>
+          </button>
         </div>
       </div>
     </div>
@@ -34,7 +39,15 @@ export default {
     EditProfileForm,
     DeleteProfile,
   },
-
+  computed: {
+    isMobile() {
+      if (screen.width <= 760) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
   data() {
     return {
       email: '',
@@ -46,7 +59,7 @@ export default {
   methods: {
     createUser() {},
     async updateUser(userId, user) {
-      await updateUserById(userId, user);
+      return await updateUserById(userId, user);
     },
     async getUser() {
       const token = Cookies.get('token');
@@ -58,6 +71,10 @@ export default {
     },
     async deleteUser(userId) {
       await deleteUserById(userId);
+    },
+    handleLogout() {
+      Cookies.remove('token');
+      this.$router.push('signin');
     },
   },
 

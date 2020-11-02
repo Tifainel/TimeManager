@@ -45,6 +45,7 @@
           Update Profile
         </button>
       </div>
+      <p class="form-success text-center">{{ formSuccess }}</p>
       <div class="clearfix"></div>
     </form>
   </card>
