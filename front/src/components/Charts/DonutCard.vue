@@ -39,6 +39,7 @@ global.Raphael = Raphael;
 import { getDayNightChart } from '../../api_wrapper/charts/charts';
 import { DonutChart } from 'vue-morris';
 import Card from '../Cards/Card';
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: 'DonutCard',
@@ -60,6 +61,12 @@ export default {
   },
   methods: {
     handleNbDaysChange() {
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
+        return;
+      }
       this.getData();
     },
     async getData() {

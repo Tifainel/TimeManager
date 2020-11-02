@@ -19,7 +19,7 @@
         v-model="username"
       >
       </base-input>
-      <base-input type="text" label="Email" placeholder="email" v-model="email">
+      <base-input type="email" label="Email" placeholder="email" v-model="email">
       </base-input>
       <p class="form-error text-center">{{ formError }}</p>
       <div class="text-center">
@@ -48,6 +48,7 @@ import {
 import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getUserByEmailAndUsername } from "../../api_wrapper/users/users";
 import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: "AddMember",
@@ -84,6 +85,12 @@ export default {
     },
 
     async addMember() {
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
+        return;
+      }
       if (this.selectedTeam.id && this.email && this.username) {
         this.user = await getUserByEmailAndUsername(this.email, this.username);
         if (this.user.error) {

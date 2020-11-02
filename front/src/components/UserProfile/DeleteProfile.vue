@@ -22,6 +22,7 @@
 <script>
 import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
+import { getConnexionType } from '../../helpers/getConnexionType'
 
 export default {
   name: 'DeleteProfile',
@@ -33,6 +34,10 @@ export default {
   },
   methods: {
     async handleDeleteUser() {
+      if (getConnexionType() === 'none') {
+        alert("Oops ! You must be connected to the Internet to use this feature");
+        return;
+      }
       const token = Cookies.get('token');
       this.deleteUser(jwt_decode(token).id);
     },

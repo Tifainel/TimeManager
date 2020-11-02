@@ -32,6 +32,7 @@ import {
   updateUserById,
   deleteUserById,
 } from '../api_wrapper/users/users';
+import { getConnexionType } from "../helpers/getConnexionType";
 
 export default {
   name: 'User',
@@ -41,25 +42,9 @@ export default {
   },
   computed: {
     isMobile() {
-      if (screen.width <= 760) {
-        return true;
-      } else {
-        return false;
-      }
+      return getDeviceType() === 'mobile';
     },
   },
-<<<<<<< HEAD
-=======
-  computed: {
-    isMobile() {
-      if (screen.width <= 760) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-  },
->>>>>>> 79a4180... feat log out button for mobiles
   data() {
     return {
       email: '',

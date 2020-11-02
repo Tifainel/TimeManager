@@ -48,6 +48,7 @@ import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import { getUserById } from '../api_wrapper/users/users';
 import CheckInOutButton from '../components/ChekInOutButton';
+import { getDeviceType } from '../helpers/getDeviceType'
 
 export default {
   components: {
@@ -62,11 +63,7 @@ export default {
       return !!Cookies.get('token');
     },
     isMobile() {
-      if (screen.width <= 760) {
-        return true;
-      } else {
-        return false;
-      }
+      return getDeviceType() === 'mobile';
     },
   },
   data() {

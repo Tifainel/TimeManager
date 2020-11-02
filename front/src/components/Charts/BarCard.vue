@@ -39,6 +39,7 @@ global.Raphael = Raphael;
 import { getTimePerDay } from "../../api_wrapper/charts/charts";
 import { BarChart } from "vue-morris";
 import Card from "../Cards/Card";
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: "BarCard",
@@ -50,12 +51,18 @@ export default {
     return {
       nbDays: 7,
       barData: [],
-      userId: "",
+      userId: ""
     };
   },
 
   methods: {
     handleNbDaysChange() {
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
+        return;
+      }
       this.getData();
     },
     async getData() {
@@ -65,7 +72,7 @@ export default {
       } else {
         this.barData = data;
         for (let i in this.barData) {
-          this.barData[i].time = Math.round(this.barData[i].time/3600);
+          this.barData[i].time = Math.round(this.barData[i].time / 3600);
         }
         this.available = true;
         this.changed = !this.changed;

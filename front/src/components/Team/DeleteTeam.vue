@@ -33,6 +33,7 @@ import jwt_decode from 'jwt-decode';
 import Card from 'src/components/Cards/Card.vue';
 import { deleteTeam, getTeamsbyManagerId } from '../../api_wrapper/teams/teams';
 import BaseDropDown from 'src/components/BaseDropdown.vue';
+import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
   name: 'DeleteTeam',
@@ -55,6 +56,10 @@ export default {
   },
   methods: {
     async deleteTeam() {
+      if (getConnexionType() === 'none') {
+        alert("Oops ! You must be connected to the Internet to use this feature");
+        return;
+      }
       deleteTeam(this.selectedTeam.id);
       this.formSuccess = `The team ${this.selectedTeam.name} has been deleted`;
       this.selectedTeam = {
