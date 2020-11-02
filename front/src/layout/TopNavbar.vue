@@ -36,19 +36,22 @@
           </li>
         </ul>
       </div>
-      <check-in-out-button style="width: 40%; margin-top: 0px" v-if="isMobile && isLoggedIn"></check-in-out-button>
+      <check-in-out-button
+        class="check-in-out-butotn"
+        v-if="isMobile && isLoggedIn"
+      ></check-in-out-button>
     </div>
   </nav>
 </template>
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import { getUserById } from "../api_wrapper/users/users";
-import CheckInOutButton from "../components/ChekInOutButton";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import { getUserById } from '../api_wrapper/users/users';
+import CheckInOutButton from '../components/ChekInOutButton';
 
 export default {
   components: {
-    CheckInOutButton
+    CheckInOutButton,
   },
   computed: {
     routeName() {
@@ -56,7 +59,7 @@ export default {
       return this.capitalizeFirstLetter(name);
     },
     isLoggedIn() {
-      return !!Cookies.get("token");
+      return !!Cookies.get('token');
     },
     isMobile() {
       if (screen.width <= 760) {
@@ -64,12 +67,12 @@ export default {
       } else {
         return false;
       }
-    }
+    },
   },
   data() {
     return {
       activeNotifications: false,
-      username: ""
+      username: '',
     };
   },
   methods: {
@@ -89,20 +92,20 @@ export default {
       this.$sidebar.displaySidebar(false);
     },
     handleLogout() {
-      Cookies.remove("token");
-      this.$router.push("signup");
+      Cookies.remove('token');
+      this.$router.push('signup');
     },
     handleRedirect() {
-      this.$router.push("signin");
-    }
+      this.$router.push('signin');
+    },
   },
 
   async beforeMount() {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     const userId = jwt_decode(token).id;
     const user = await getUserById(userId);
     this.username = this.capitalizeFirstLetter(user.username);
-  }
+  },
 };
 </script>
 <style>
@@ -113,5 +116,9 @@ export default {
   display: flex;
   align-items: center;
   color: #1dc7ea;
+}
+.check-in-out-button {
+  width: 40%;
+  margin-top: 0px;
 }
 </style>
