@@ -24,7 +24,7 @@ defmodule SrcWeb.Endpoint do
     at: "/",
     from: {:src, "priv/static"},
     gzip: false,
-    only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt),
+    only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt app-debug.apk tutorial.pdf),
     only_matching: ["precache-manifest"]
 
   # Code reloading can be explicitly enabled under the
