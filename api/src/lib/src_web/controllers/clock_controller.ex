@@ -3,6 +3,7 @@ defmodule SrcWeb.ClockController do
 
   alias Src.Time
   alias Src.Time.Clock
+  alias Src.Users
 
   action_fallback SrcWeb.FallbackController
 
@@ -11,18 +12,25 @@ defmodule SrcWeb.ClockController do
     render(conn, "index.json", clocks: clocks)
   end
 
-  def create(conn, clock_params) do
-    with {:ok, %Clock{} = clock} <- Time.create_clock(%{"clock"=>clock_params}) do
+  def create(conn, %{"user_id"=>user_id, "clock"=>clock_params}) do
+
+    user_exists = Users.user_exists(user_id)
+    if user_exists > 0 do
+      clock_params = Map.put(clock_params, "user_id", user_id)
+      with {:ok, %Clock{} = clock} <- Time.create_clock(%{"clock"=>clock_params}) do
+        conn
+        |> put_status(:created)
+        |> render("show.json", clock: clock)
+      end
+    else
       conn
-      |> put_status(:created)
-      #|> put_resp_header("location", Routes.clock_path(conn, :show, clock))
-      |> render("show.json", clock: clock)
+      |> put_status(:not_found)
+      |> json(%{"Error"=>"User not found."})
     end
   end
 
   def show(conn, user_id) do
-    #IO.inspect(user_id)
-    clocks = Time.get_clock_by_user_id(user_id);
+    clocks = Time.get_clock_by_user_id(user_id)
     conn
     |> put_status(:ok)
     |> json(clocks)

@@ -33,8 +33,8 @@
 
     * Response body :
 ```json
-  {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInJvbGUiOjEsInNjb3BlIjoidXNlciJ9.FiXmfp2qaV3fEoSi5flxTYOQNo-bKy5Us2RN6SzlaxQ"
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInJvbGUiOjEsInNjb3BlIjoidXNlciJ9.FiXmfp2qaV3fEoSi5flxTYOQNo-bKy5Us2RN6SzlaxQ"
 }
 ```
 
@@ -143,17 +143,21 @@
     * Request body :
 ```json
 {
-    "start": "2020-10-20T15:19:12Z",
-    "end":"2020-10-20T15:19:12"
+    "workingtime": {
+      "start": "2020-10-20T15:19:12Z",
+      "end": "2020-10-20T20:30:00Z"
+    }
 }
 ```
     * Response body :
 ```json
 {
-    "end": "2020-10-12T15:18:12.000000",
-    "id": 1,
-    "start": "2020-10-10T15:17:12.000000",
-    "user_id": 1
+    "data": {
+        "end": "2020-10-20T15:19:12Z",
+        "id": 3,
+        "start": "2020-10-20T20:30:00Z",
+        "user_id": 1
+    }
 }
 ```
 
@@ -225,8 +229,10 @@
     * Request body :
 ```json
 {
-    "time": "2020-10-13T08:30:12Z",
-    "status":"true"
+    "clock": {
+        "time": "2020-10-13T08:30:12Z",
+        "status":"true"
+    }
 }
 ```
 
@@ -236,12 +242,12 @@
     "data": {
         "id": 3,
         "status": true,
-        "time": "2020-10-13T08:30:12.000000"
+        "time": "2020-10-13T08:30:12.00Z"
     }
 }
 ```
 
-3. **GET /clocks/last/:userID**
+3. **GET /clocks/:userID/last**
 *Get the last clock for the user by its user id*.
 
     * Response body :
@@ -520,7 +526,7 @@
 }
 ```
 
-5. **POST /teams/ :**
+5. **POST /teams :**
 *Create a new team*.
 
 |Parameter|Type|Description|
@@ -532,9 +538,11 @@
     * Request body :
 ```json
 {
-    "user_id":10,
-    "name":"new team",
-    "members":[3, 22]
+    "team": {
+        "user_id":10,
+        "name":"new team",
+        "members":[3, 22]
+    }
 }
 ```
 

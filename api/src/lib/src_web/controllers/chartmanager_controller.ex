@@ -37,15 +37,17 @@ defmodule SrcWeb.ChartManagerController do
 
       #get the times from date
       timeStart = dt_extract_time(dateStart)
-      timeEnd = dt_extract_time(dateEnd)
+      #timeEnd = dt_extract_time(dateEnd)
+      IO.inspect(dateEnd)
 
-
-      if dateStart < dateEnd do
+      if dateStart < dateEnd and dateEnd !== nil do
         if timeStart > default_day_start and timeStart < default_night_start do
           {counter + 1, totalDay + NaiveDateTime.diff(dateEnd, dateStart), totalNight + 0}
         else
           {counter + 1, totalDay + 0, totalNight + NaiveDateTime.diff(dateEnd, dateStart)}
         end
+      else
+        {counter + 1, totalDay + 0, totalNight + 0}
       end
     end
 

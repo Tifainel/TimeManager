@@ -11,7 +11,10 @@ defmodule SrcWeb.TeamView do
   end
 
   def render("team.json", %{team: team}) do
-    %{id: team.id,
-      members: team.members}
+    %{
+      id: team.id,
+      members: team.members,
+      user_id: team.user_id
+    }
   end
 end

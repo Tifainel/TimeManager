@@ -3,6 +3,7 @@ defmodule SrcWeb.WorkingtimeController do
 
   alias Src.Time
   alias Src.Time.Workingtime
+  alias Src.Users
 
   action_fallback SrcWeb.FallbackController
 
@@ -11,13 +12,20 @@ defmodule SrcWeb.WorkingtimeController do
     render(conn, "index.json", workingtimes: workingtimes)
   end
 
-  def create(conn, workingtime_params) do
-
-    with {:ok, %Workingtime{} = workingtime} <- Time.create_workingtime(workingtime_params) do
+  def create(conn, %{"user_id" => user_id, "workingtime" => workingtime_params}) do
+    user_exists = Users.user_exists(user_id)
+    if user_exists == 1 do
+      workingtime_params = Map.put(workingtime_params, "user_id", user_id)
+      with {:ok, %Workingtime{} = workingtime} <- Time.create_workingtime(workingtime_params) do
+        conn
+        |> put_status(:created)
+       # |> put_resp_header("location", Routes.workingtime_path(conn, :show, workingtime))
+        |> render("show.json", workingtime: workingtime)
+      end
+    else
       conn
-      |> put_status(:created)
-     # |> put_resp_header("location", Routes.workingtime_path(conn, :show, workingtime))
-      |> render("show.json", workingtime: workingtime)
+      |> put_status(:not_found)
+      |> json(%{"Error"=>"User not found."})
     end
   end
 
@@ -43,15 +51,31 @@ defmodule SrcWeb.WorkingtimeController do
   end
 
   def get_one(conn, params) do
+
     workingtime = Time.get_one_workingtime(params)
-    render(conn, "workingtime.json", workingtime: workingtime)
+
+    if workingtime == nil do
+      conn
+      |> put_status(:not_found)
+      |> json(%{"Error"=>"Unknown workingtime."})
+    else
+      conn
+      |> put_status(:ok)
+      |> render("workingtime.json", workingtime: workingtime)
+    end
 
   end
 
   def get_all(conn, params) do
-    workingtimes = Time.get_all_workingtime(params)
-    conn
-    |> put_status(:ok)
-    |> json(workingtimes)
+    if params["start"] !== nil and params["end"] !== nil do
+      workingtimes = Time.get_all_workingtime(params)
+      conn
+      |> put_status(:ok)
+      |> json(workingtimes)
+    else
+      conn
+      |> put_status(:not_found)
+      |> json(%{"Error"=>"Start and End datetimes must be set."})
+    end
   end
 end

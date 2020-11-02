@@ -37,6 +37,12 @@ defmodule Src.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def user_exists(id) do
+    query = from u in "users",
+              where: u.id == ^String.to_integer(id),
+              select: count(u.id)
+    Repo.one(query)
+  end
 
   def check_user_password(params) do
     pwd = :crypto.hash(:md5, params["password"]) |> Base.encode16()
