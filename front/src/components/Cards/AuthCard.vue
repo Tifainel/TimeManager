@@ -72,11 +72,11 @@
       </div>
       <div class="msg" v-if="connexion">
         Want to create an account ?
-        <a href="/#/signup">Sign up here</a>
+        <p @click.prevent="redirectSigninSignup" class="link">Sign up here</p>
       </div>
       <div class="msg" v-else>
         Already have an account ?
-        <a href="/#/signin">Sign in here</a>
+        <p @click.prevent="redirectSigninSignup" class="link">Sign in here</p>
       </div>
     </form>
   </card>
@@ -152,10 +152,15 @@ export default {
         this.$router.push('dashboard');
       } else this.formError = 'Incorrect username or password';
     },
+
+    redirectSigninSignup() {
+      if (this.connexion) this.$router.push('signup');
+      else this.$router.push('signin');
+    },
   },
 };
 </script>
-<style>
+<style lang="scss">
 .row {
   display: flex;
   justify-content: center;
@@ -175,5 +180,13 @@ export default {
 }
 .msg {
   padding: 20px;
+}
+
+.link {
+  cursor: pointer;
+  color: #1dc7ea;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 </style>
