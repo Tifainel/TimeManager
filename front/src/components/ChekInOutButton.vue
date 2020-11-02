@@ -18,22 +18,22 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
 import {
   getLastClockbyUserId,
-  createClock
-} from "../api_wrapper/clocks/clocks";
+  createClock,
+} from '../api_wrapper/clocks/clocks';
 
 export default {
-  name: "CheckInOutButton",
+  name: 'CheckInOutButton',
   data() {
     return {
       lastClock: {
-        date: "",
-        clockIn: Boolean
+        date: '',
+        clockIn: Boolean,
       },
-      userId: String
+      userId: String,
     };
   },
   methods: {
@@ -41,7 +41,7 @@ export default {
       this.lastClock.clockIn = !this.lastClock.clockIn;
       const newClock = {
         time: new Date().toISOString(),
-        status: this.lastClock.clockIn
+        status: this.lastClock.clockIn,
       };
       createClock(this.userId, newClock);
     },
@@ -54,21 +54,23 @@ export default {
       } else {
         this.lastClock.clockIn = false;
       }
-    }
+    },
   },
 
   beforeMount() {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     this.userId = jwt_decode(token).id;
     this.getLastClock();
-  }
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .button-style {
   margin: 10px 0 0 20px;
-  width: 80%;
+  @media (min-width: 760px) {
+    width: 80%;
+  }
 }
 
 .checkout-button {
