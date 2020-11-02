@@ -11,6 +11,9 @@
               >FAQ</router-link
             >
           </li>
+          <li>
+            <a href="/tutorial.pdf" target="_blank">How to use ?</a>
+          </li>
         </ul>
       </nav>
     </div>
