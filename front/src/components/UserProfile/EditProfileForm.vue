@@ -45,6 +45,7 @@
           Update Profile
         </button>
       </div>
+      <p class="form-success text-center">{{ formSuccess }}</p>
       <div class="clearfix"></div>
     </form>
   </card>
@@ -78,9 +79,10 @@ export default {
       user: {
         username: "",
         email: "",
-        password: "",
+        password: ""
       },
-      formError: ""
+      formError: "",
+      formSuccess: ""
     };
   },
   methods: {
@@ -88,7 +90,12 @@ export default {
       const token = Cookies.get("token");
       if (this.isEmailValid()) {
         this.formError = "";
-        this.updateUser(jwt_decode(token).id, this.user);
+        const updated = await this.updateUser(jwt_decode(token).id, this.user);
+        if (updated.error) {
+          this.formError = "An error has occured";
+        } else {
+          this.formSuccess = "Your profile has been updated";
+        }
       } else {
         this.formError = "The email is incorrect";
       }
