@@ -5,10 +5,12 @@ defmodule SrcWeb.TeamControllerTest do
   alias Src.Users.Team
 
   @create_attrs %{
-    members: []
+    members: [],
+    name: "some team name"
   }
   @update_attrs %{
-    members: []
+    members: [],
+    name: "some team name"
   }
   @invalid_attrs %{members: nil}
 

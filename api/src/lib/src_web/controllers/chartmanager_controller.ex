@@ -80,9 +80,7 @@ defmodule SrcWeb.ChartManagerController do
     loopDate = minDate
     i = 0
     #while start
-    IO.inspect("ce langage est de la merde")
     {loopDate, timeperdays, i} = while {loopDate, timeperdays, i}, Date.diff(loopDate, todayDate) < 0 do
-      IO.inspect("ce langage est de la merde")
 
       minDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T00:00:00.000000Z")
       maxDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T23:59:59.000000Z")

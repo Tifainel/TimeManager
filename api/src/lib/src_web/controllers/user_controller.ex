@@ -23,7 +23,8 @@ defmodule SrcWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     pwd = :crypto.hash(:md5, user_params["password"]) |> Base.encode16()
     user_params = Map.put(user_params, "password", pwd)
-
+    user_params = Map.put(user_params, "username", String.downcase(user_params["username"]))
+    user_params = Map.put(user_params, "email", String.downcase(user_params["email"]))
     with {:ok, %User{} = user} <- Users.create_user(user_params) do
       conn
       |> put_status(:created)

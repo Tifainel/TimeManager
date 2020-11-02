@@ -46,15 +46,16 @@ defmodule Src.Users do
 
   def check_user_password(params) do
     pwd = :crypto.hash(:md5, params["password"]) |> Base.encode16()
+    usrn = String.downcase(params["username"])
     query = from u in "users",
-              where: u.username == ^params["username"] and u.password == ^pwd,
+              where: u.username == ^usrn and u.password == ^pwd,
               select: [:id, :email, :username, :role]
     Repo.one(query)
   end
 
   def get_user_by_email_and_username(attrs) do
     query = from u in "users",
-              where: u.email == ^attrs["email"] and u.username == ^attrs["username"],
+              where: u.email == ^String.downcase(attrs["email"]) and u.username == ^String.downcase(attrs["username"]),
               select: [:id, :email, :username, :role]
     Repo.one(query)
   end

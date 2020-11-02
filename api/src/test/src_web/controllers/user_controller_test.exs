@@ -6,13 +6,15 @@ defmodule SrcWeb.UserControllerTest do
 
   @create_attrs %{
     email: "some email",
-    username: "some username"
+    username: "some username",
+    password: "84FE4741B37204D9F2FF3665811F449D"
   }
   @update_attrs %{
     email: "some updated email",
-    username: "some updated username"
+    username: "some updated username",
+    password: "AC1EF17C2DB40995E9FDD40B04A5A649"
   }
-  @invalid_attrs %{email: nil, username: nil}
+  @invalid_attrs %{email: nil, username: nil, password: nil}
 
   def fixture(:user) do
     {:ok, user} = Users.create_user(@create_attrs)
@@ -40,7 +42,8 @@ defmodule SrcWeb.UserControllerTest do
       assert %{
                "id" => id,
                "email" => "some email",
-               "username" => "some username"
+               "username" => "some username",
+               "password" => "84FE4741B37204D9F2FF3665811F449D"
              } = json_response(conn, 200)["data"]
     end
 
@@ -62,7 +65,8 @@ defmodule SrcWeb.UserControllerTest do
       assert %{
                "id" => id,
                "email" => "some updated email",
-               "username" => "some updated username"
+               "username" => "some updated username",
+               "password" => "AC1EF17C2DB40995E9FDD40B04A5A649"
              } = json_response(conn, 200)["data"]
     end
 
