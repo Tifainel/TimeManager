@@ -1,12 +1,19 @@
 import config from '../../config.json';
+import { setMobileLocalStorage } from '../../helpers/localStorage';
+import { getConnexionType } from '../../helpers/getConnexionType';
 
 export async function getRoles() {
   try {
     const roles = await fetch(`${config.api_url}/roles`, {
       method: 'GET',
     });
-    return (await roles.json());
+    const res = await roles.json();
+    setMobileLocalStorage('roles', res);
+    return res;
   } catch (e) {
+    if (getConnexionType === 'none') {
+      return JSON.parse(window.localStorage.getItem('roles'));
+    }
     return { error: e };
   }
 }
@@ -27,4 +34,3 @@ export async function getRoles() {
 //     return { error: e };
 //   }
 // }
-

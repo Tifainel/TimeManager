@@ -1,6 +1,6 @@
 import config from '../../config.json';
-// import { setMobileLocalStorage } from '../../helpers/localStorage';
-// import { getDeviceType } from '../../helpers/getDeviceType';
+import { setMobileLocalStorage } from '../../helpers/localStorage';
+import { getConnexionType } from '../../helpers/getConnexionType';
 
 export async function getUserById(userId) {
   try {
@@ -8,14 +8,12 @@ export async function getUserById(userId) {
       method: 'GET',
     });
     const userRes = (await user.json()).data;
-    // setMobileLocalStorage('user', userRes);
+    setMobileLocalStorage('user', userRes);
     return userRes;
   } catch (e) {
-    // if (getDeviceType() === 'mobile') {
-    //   if (navigator.connection.type === 'none') {
-    //     return JSON.parse(window.localStorage.getItem('user'));
-    //   }
-    // }
+    if (getConnexionType === 'none') {
+      return JSON.parse(window.localStorage.getItem('user'));
+    }
     return { error: e };
   }
 }
