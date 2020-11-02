@@ -77,19 +77,25 @@ export default {
   data() {
     return {
       user: {
-        username: '',
-        email: '',
-        password: '',
+        username: "",
+        email: "",
+        password: ""
       },
-      formError: '',
+      formError: "",
+      formSuccess: ""
     };
   },
   methods: {
     async updateProfile() {
       const token = Cookies.get('token');
       if (this.isEmailValid()) {
-        this.formError = '';
-        this.updateUser(jwt_decode(token).id, this.user);
+        this.formError = "";
+        const updated = await this.updateUser(jwt_decode(token).id, this.user);
+        if (updated.error) {
+          this.formError = "An error has occured";
+        } else {
+          this.formSuccess = "Your profile has been updated";
+        }
       } else {
         this.formError = 'The email is incorrect';
       }

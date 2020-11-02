@@ -48,6 +48,18 @@ export default {
       }
     },
   },
+<<<<<<< HEAD
+=======
+  computed: {
+    isMobile() {
+      if (screen.width <= 760) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+>>>>>>> 79a4180... feat log out button for mobiles
   data() {
     return {
       email: '',
