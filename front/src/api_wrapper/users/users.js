@@ -1,12 +1,21 @@
 import config from '../../config.json';
+// import { setMobileLocalStorage } from '../../helpers/localStorage';
+// import { getDeviceType } from '../../helpers/getDeviceType';
 
 export async function getUserById(userId) {
   try {
     const user = await fetch(`${config.api_url}/users/${userId}`, {
       method: 'GET',
     });
-    return (await user.json()).data;
+    const userRes = (await user.json()).data;
+    // setMobileLocalStorage('user', userRes);
+    return userRes;
   } catch (e) {
+    // if (getDeviceType() === 'mobile') {
+    //   if (navigator.connection.type === 'none') {
+    //     return JSON.parse(window.localStorage.getItem('user'));
+    //   }
+    // }
     return { error: e };
   }
 }
@@ -33,7 +42,12 @@ export async function updateUserById(userId, userData) {
         'Content-type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({
-        user: { username: userData.username, email: userData.email, password: userData.password, role: userData.role },
+        user: {
+          username: userData.username,
+          email: userData.email,
+          password: userData.password,
+          role: userData.role,
+        },
       }),
     });
     return { res: 'success' };

@@ -51,61 +51,60 @@
 </template>
 
 <script>
-import Card from "src/components/Cards/Card.vue";
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
+import Card from 'src/components/Cards/Card.vue';
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
 
 export default {
   components: {
-    Card
+    Card,
   },
   props: {
     email: {
       type: String,
-      required: true
+      required: true,
     },
     username: {
       type: String,
-      required: true
+      required: true,
     },
     updateUser: {
       type: Function,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       user: {
-        username: "",
-        email: "",
-        password: "",
+        username: '',
+        email: '',
+        password: '',
       },
-      formError: ""
+      formError: '',
     };
   },
   methods: {
     async updateProfile() {
-      const token = Cookies.get("token");
+      const token = Cookies.get('token');
       if (this.isEmailValid()) {
-        this.formError = "";
+        this.formError = '';
         this.updateUser(jwt_decode(token).id, this.user);
       } else {
-        this.formError = "The email is incorrect";
+        this.formError = 'The email is incorrect';
       }
-      // alert('Your data: ' + JSON.stringify(this.user));
     },
     isEmailValid() {
       return this.user.email.match(
-        /([a-zA-Z0-9\.\-\_]*)@[a-zA-Z0-9\.\-]*\.[a-zA-Z]{1,3}/g
+        /([a-zA-Z0-9\.\-\_]*)@[a-zA-Z0-9\.\-]*\.[a-zA-Z]{1,3}/g,
       );
-    }
+    },
   },
   mounted() {
     setTimeout(() => {
       this.user.username = this.username;
       this.user.email = this.email;
     }, 500);
-  }
+  },
 };
 </script>
 

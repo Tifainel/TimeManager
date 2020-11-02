@@ -32,7 +32,7 @@ export default {
   name: 'User',
   components: {
     EditProfileForm,
-    DeleteProfile
+    DeleteProfile,
   },
 
   data() {
