@@ -120,7 +120,6 @@ export default {
         const workingtimetable = [];
         for (const time in workingTimes) {
           const dateStart = new Date(workingTimes[time].start);
-          alert(workingTimes[time].start);
           const dateEnd = new Date(workingTimes[time].end);
           if (dateStart < now) {
             workingtimetable.push(time);
@@ -135,6 +134,7 @@ export default {
         if (this.mini == true) {
           workingTimes.splice(3);
         }
+        return workingTimes;
       }
       return [];
     },
@@ -166,7 +166,6 @@ export default {
     },
     async affectWorkingTimes() {
       this.workingTimes = await this.getWorkingTimes();
-      alert(this.workingTimes[0]);
     },
     switchModal() {
       this.showModal = !this.showModal;

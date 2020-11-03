@@ -14,7 +14,7 @@ export async function getDayNightChart(userId, days) {
     setMobileLocalStorage('donutChart', res);
     return res;
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       return JSON.parse(window.localStorage.getItem('donutChart'));
     }
     return { error: e };
@@ -33,7 +33,7 @@ export async function getTimePerDay(userId, days) {
     setMobileLocalStorage('barChart', res);
     return res;
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       return JSON.parse(window.localStorage.getItem('barChart'));
     }
     return { error: e };
@@ -52,7 +52,7 @@ export async function getWorkingTimeAndClocked(userId, days) {
     setMobileLocalStorage('lineChart', res);
     return res;
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       return JSON.parse(window.localStorage.getItem('lineChart'));
     }
     return { error: e };

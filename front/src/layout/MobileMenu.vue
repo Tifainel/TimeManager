@@ -13,6 +13,7 @@ export default {
   methods: {
     handleLogout() {
       Cookies.remove('token');
+      window.localStorage.clear();
       this.$router.push('signup');
     },
   },

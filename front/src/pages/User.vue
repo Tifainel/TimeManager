@@ -32,7 +32,7 @@ import {
   updateUserById,
   deleteUserById,
 } from '../api_wrapper/users/users';
-import { getConnexionType } from "../helpers/getConnexionType";
+import { getDeviceType } from "../helpers/getDeviceType";
 
 export default {
   name: 'User',
@@ -71,6 +71,7 @@ export default {
     },
     handleLogout() {
       Cookies.remove('token');
+      window.localStorage.clear();
       this.$router.push('signin');
     },
   },

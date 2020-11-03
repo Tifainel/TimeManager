@@ -23,13 +23,14 @@ import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
 import { getTeamsbyManagerId, modifyTeam } from "../../api_wrapper/teams/teams";
 import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getUserById } from "../../api_wrapper/users/users";
-import { getConnexionType } from '../../helpers/getConnexionType';
+import { getConnexionType } from "../../helpers/getConnexionType";
+import { setMobileLocalStorage } from '../../helpers/localStorage';
 
 export default {
   name: "DropDownTeams",
   components: { BaseDropDown, TeamMemberCard },
   props: {
-    setSelectedId: Function,
+    setSelectedId: Function
   },
   data() {
     return {
@@ -62,12 +63,20 @@ export default {
       }
       if (!member) {
         this.setSelectedId(this.userId);
+        setMobileLocalStorage("selectedUser", {
+          username: "Me",
+          id: this.userId
+        });
         this.selectedName = "Me";
       } else {
         this.setSelectedId(member.id);
+        setMobileLocalStorage("selectedUser", {
+          username: member.username,
+          id: member.id
+        });
         this.selectedName = member.username;
       }
-    },
+    }
   },
 
   async mounted() {
@@ -75,7 +84,16 @@ export default {
     this.userId = jwt_decode(token).id;
     this.teams = await getTeamsbyManagerId(this.userId);
     this.getMembersForTeams(this.teams);
-  },
+    if (getConnexionType() === "none") {
+      if (!!window.localStorage.getItem("selectedUser")) {
+        this.selectedName = JSON.parse(
+          window.localStorage.getItem("selectedUser")).username
+        ;
+      } else {
+        this.selectedName = "Me";
+      }
+    }
+  }
 };
 </script>
 <style>

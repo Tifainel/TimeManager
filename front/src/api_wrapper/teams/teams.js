@@ -11,7 +11,7 @@ export async function getTeamsbyManagerId(userId) {
     setMobileLocalStorage('teams', res);
     return res;
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       return JSON.parse(window.localStorage.getItem('teams'));
     }
     return { error: e };

@@ -11,7 +11,7 @@ export async function getRoles() {
     setMobileLocalStorage('roles', res);
     return res;
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       return JSON.parse(window.localStorage.getItem('roles'));
     }
     return { error: e };
