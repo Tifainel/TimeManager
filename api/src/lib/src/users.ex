@@ -46,15 +46,16 @@ defmodule Src.Users do
 
   def check_user_password(params) do
     pwd = :crypto.hash(:md5, params["password"]) |> Base.encode16()
+    usrn = String.downcase(params["username"])
     query = from u in "users",
-              where: u.username == ^params["username"] and u.password == ^pwd,
+              where: u.username == ^usrn and u.password == ^pwd,
               select: [:id, :email, :username, :role]
     Repo.one(query)
   end
 
   def get_user_by_email_and_username(attrs) do
     query = from u in "users",
-              where: u.email == ^attrs["email"] and u.username == ^attrs["username"],
+              where: u.email == ^String.downcase(attrs["email"]) and u.username == ^String.downcase(attrs["username"]),
               select: [:id, :email, :username, :role]
     Repo.one(query)
   end
@@ -345,5 +346,116 @@ defmodule Src.Users do
               where: u.role == ^String.to_integer(role_id),
               select: [:id, :email, :username, :role]
     Repo.all(query)
+  end
+
+  alias Src.Users.Auth
+
+  @doc """
+  Returns the list of auths.
+
+  ## Examples
+
+      iex> list_auths()
+      [%Auth{}, ...]
+
+  """
+  def list_auths do
+    Repo.all(Auth)
+  end
+
+  @doc """
+  Gets a single auth.
+
+  Raises `Ecto.NoResultsError` if the Auth does not exist.
+
+  ## Examples
+
+      iex> get_auth!(123)
+      %Auth{}
+
+      iex> get_auth!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  #def get_auth!(id), do: Repo.get!(Auth, id)
+
+  @doc """
+  Creates a auth.
+
+  ## Examples
+
+      iex> create_auth(%{field: value})
+      {:ok, %Auth{}}
+
+      iex> create_auth(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_auth(attrs \\ %{}) do
+    %Auth{}
+    |> Auth.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a auth.
+
+  ## Examples
+
+      iex> update_auth(auth, %{field: new_value})
+      {:ok, %Auth{}}
+
+      iex> update_auth(auth, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_auth(%Auth{} = auth, attrs) do
+    auth
+    |> Auth.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a auth.
+
+  ## Examples
+
+      iex> delete_auth(auth)
+      {:ok, %Auth{}}
+
+      iex> delete_auth(auth)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_auth(%Auth{} = auth) do
+    Repo.delete(auth)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking auth changes.
+
+  ## Examples
+
+      iex> change_auth(auth)
+      %Ecto.Changeset{data: %Auth{}}
+
+  """
+  def change_auth(%Auth{} = auth, attrs \\ %{}) do
+    Auth.changeset(auth, attrs)
+  end
+
+  def set_auth(user_id, jwt, max) do
+    if get_auth(jwt) == nil do
+      today = NaiveDateTime.utc_now()
+      expire_date = NaiveDateTime.add(today, max * 24 * 60 * 60)
+      create_auth(%{user_id: user_id, token: jwt, expire_date: expire_date})
+    end
+  end
+
+  def get_auth(jwt) do
+    query = from a in "auths",
+              where: a.token == ^jwt and a.expire_date > ^NaiveDateTime.utc_now(),
+              select: [:id]
+    Repo.one(query)
   end
 end

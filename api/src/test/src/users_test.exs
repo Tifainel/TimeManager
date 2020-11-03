@@ -3,12 +3,71 @@ defmodule Src.UsersTest do
 
   alias Src.Users
 
+  describe "roles" do
+    alias Src.Users.Role
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def role_fixture(attrs \\ %{}) do
+      {:ok, role} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Users.create_role()
+
+      role
+    end
+
+    test "list_roles/0 returns all roles" do
+      role = role_fixture()
+      assert Users.list_roles() == [role]
+    end
+
+    test "get_role!/1 returns the role with given id" do
+      role = role_fixture()
+      assert Users.get_role!(role.id) == role
+    end
+
+    test "create_role/1 with valid data creates a role" do
+      assert {:ok, %Role{} = role} = Users.create_role(@valid_attrs)
+      assert role.name == "some name"
+    end
+
+    test "create_role/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Users.create_role(@invalid_attrs)
+    end
+
+    test "update_role/2 with valid data updates the role" do
+      role = role_fixture()
+      assert {:ok, %Role{} = role} = Users.update_role(role, @update_attrs)
+      assert role.name == "some updated name"
+    end
+
+    test "update_role/2 with invalid data returns error changeset" do
+      role = role_fixture()
+      assert {:error, %Ecto.Changeset{}} = Users.update_role(role, @invalid_attrs)
+      assert role == Users.get_role!(role.id)
+    end
+
+    test "delete_role/1 deletes the role" do
+      role = role_fixture()
+      assert {:ok, %Role{}} = Users.delete_role(role)
+      assert_raise Ecto.NoResultsError, fn -> Users.get_role!(role.id) end
+    end
+
+    test "change_role/1 returns a role changeset" do
+      role = role_fixture()
+      assert %Ecto.Changeset{} = Users.change_role(role)
+    end
+  end
+
   describe "users" do
     alias Src.Users.User
 
-    @valid_attrs %{email: "some email", username: "some username"}
-    @update_attrs %{email: "some updated email", username: "some updated username"}
-    @invalid_attrs %{email: nil, username: nil}
+    @valid_attrs %{email: "some email", username: "some username", password: "84FE4741B37204D9F2FF3665811F449D"}
+    @update_attrs %{email: "some updated email", username: "some updated username", password: "AC1EF17C2DB40995E9FDD40B04A5A649"}
+    @invalid_attrs %{email: nil, username: nil, password: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -123,62 +182,64 @@ defmodule Src.UsersTest do
     end
   end
 
-  describe "roles" do
-    alias Src.Users.Role
+  describe "auths" do
+    alias Src.Users.Auth
 
-    @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
+    @valid_attrs %{expire_date: "2010-04-17T14:00:00Z", token: "some token"}
+    @update_attrs %{expire_date: "2011-05-18T15:01:01Z", token: "some updated token"}
+    @invalid_attrs %{expire_date: nil, token: nil}
 
-    def role_fixture(attrs \\ %{}) do
-      {:ok, role} =
+    def auth_fixture(attrs \\ %{}) do
+      {:ok, auth} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Users.create_role()
+        |> Users.create_auth()
 
-      role
+      auth
     end
 
-    test "list_roles/0 returns all roles" do
-      role = role_fixture()
-      assert Users.list_roles() == [role]
+    test "list_auths/0 returns all auths" do
+      auth = auth_fixture()
+      assert Users.list_auths() == [auth]
     end
 
-    test "get_role!/1 returns the role with given id" do
-      role = role_fixture()
-      assert Users.get_role!(role.id) == role
+    test "get_auth!/1 returns the auth with given id" do
+      auth = auth_fixture()
+      assert Users.get_auth!(auth.id) == auth
     end
 
-    test "create_role/1 with valid data creates a role" do
-      assert {:ok, %Role{} = role} = Users.create_role(@valid_attrs)
-      assert role.name == "some name"
+    test "create_auth/1 with valid data creates a auth" do
+      assert {:ok, %Auth{} = auth} = Users.create_auth(@valid_attrs)
+      assert auth.expire_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert auth.token == "some token"
     end
 
-    test "create_role/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Users.create_role(@invalid_attrs)
+    test "create_auth/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Users.create_auth(@invalid_attrs)
     end
 
-    test "update_role/2 with valid data updates the role" do
-      role = role_fixture()
-      assert {:ok, %Role{} = role} = Users.update_role(role, @update_attrs)
-      assert role.name == "some updated name"
+    test "update_auth/2 with valid data updates the auth" do
+      auth = auth_fixture()
+      assert {:ok, %Auth{} = auth} = Users.update_auth(auth, @update_attrs)
+      assert auth.expire_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert auth.token == "some updated token"
     end
 
-    test "update_role/2 with invalid data returns error changeset" do
-      role = role_fixture()
-      assert {:error, %Ecto.Changeset{}} = Users.update_role(role, @invalid_attrs)
-      assert role == Users.get_role!(role.id)
+    test "update_auth/2 with invalid data returns error changeset" do
+      auth = auth_fixture()
+      assert {:error, %Ecto.Changeset{}} = Users.update_auth(auth, @invalid_attrs)
+      assert auth == Users.get_auth!(auth.id)
     end
 
-    test "delete_role/1 deletes the role" do
-      role = role_fixture()
-      assert {:ok, %Role{}} = Users.delete_role(role)
-      assert_raise Ecto.NoResultsError, fn -> Users.get_role!(role.id) end
+    test "delete_auth/1 deletes the auth" do
+      auth = auth_fixture()
+      assert {:ok, %Auth{}} = Users.delete_auth(auth)
+      assert_raise Ecto.NoResultsError, fn -> Users.get_auth!(auth.id) end
     end
 
-    test "change_role/1 returns a role changeset" do
-      role = role_fixture()
-      assert %Ecto.Changeset{} = Users.change_role(role)
+    test "change_auth/1 returns a auth changeset" do
+      auth = auth_fixture()
+      assert %Ecto.Changeset{} = Users.change_auth(auth)
     end
   end
 end

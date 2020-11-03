@@ -3,18 +3,18 @@ INSERT INTO roles ("name", "inserted_at", "updated_at") VALUES
 ('Manager', now(), now()),
 ('General Manager', now(), now());
 
-INSERT INTO users ("username", "email", "password", "role", "inserted_at", "updated_at") VALUES ('employee', 'employee@time.man', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('gmandrey0', 'rknowlson0@trellian.com', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('gblincowe2', 'abrugh2@gizmodo.com', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('ejephcote3', 'dbrick3@tmall.com', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('kjaher4', 'lchainey4@comcast.net', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('rdunkersley5', 'spheasey5@blinklist.com', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('kwallington6', 'owrotham6@phoca.cz', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('kfidilis7', 'jbeddow7@fotki.com', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('kpennrington8', 'kanselm8@lycos.com', 'fa5473530e4d1a5a1e1eb53d2fedb10c', 1, now(), now()),
-('mrunge9', 'dscotcher9@sohu.com', '1d0258c2440a8d19e716292b231e3190', 2, now(), now()),
-('manager', 'manager@time.man', '1d0258c2440a8d19e716292b231e3190', 2, now(), now()),
-('admin', 'admin@time.man', '21232f297a57a5a743894a0e4a801fc3', 3, now(), now());
+INSERT INTO users ("username", "email", "password", "role", "inserted_at", "updated_at") VALUES ('employee', 'employee@time.man', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('gmandrey0', 'rknowlson0@trellian.com', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('gblincowe2', 'abrugh2@gizmodo.com', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('ejephcote3', 'dbrick3@tmall.com', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('kjaher4', 'lchainey4@comcast.net', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('rdunkersley5', 'spheasey5@blinklist.com', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('kwallington6', 'owrotham6@phoca.cz', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('kfidilis7', 'jbeddow7@fotki.com', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('kpennrington8', 'kanselm8@lycos.com', 'FA5473530E4D1A5A1E1EB53D2FEDB10C', 1, now(), now()),
+('mrunge9', 'dscotcher9@sohu.com', '1D0258C2440A8D19E716292B231E3190', 2, now(), now()),
+('manager', 'manager@time.man', '1D0258C2440A8D19E716292B231E3190', 2, now(), now()),
+('admin', 'admin@time.man', '21232F297A57A5A743894A0E4A801FC3', 3, now(), now());
 
 INSERT INTO teams ("members", "name", "user_id", "inserted_at", "updated_at") VALUES
 (ARRAY[1,2,3,4,5], 'toto', 11, now(), now()),

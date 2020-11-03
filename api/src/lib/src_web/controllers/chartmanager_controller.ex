@@ -13,6 +13,7 @@ defmodule SrcWeb.ChartManagerController do
   end
 
   def day_night_data(conn, %{"user_id"=>user_id, "days"=>days}) do
+    is_allowed(conn)
     clocks_in = ChartManager.get_clocks_in(user_id, days)
     clocks_out = ChartManager.get_clocks_out(user_id, Enum.at(clocks_in, 0)[:time])
 
@@ -67,6 +68,7 @@ defmodule SrcWeb.ChartManagerController do
   """
 
   def time_per_days(conn, %{"user_id"=>user_id, "days"=>days}) do
+    is_allowed(conn)
     timeperdays = loop_for_every_day(user_id, days)
     conn
     |> put_status(:ok)
@@ -80,9 +82,7 @@ defmodule SrcWeb.ChartManagerController do
     loopDate = minDate
     i = 0
     #while start
-    IO.inspect("ce langage est de la merde")
     {loopDate, timeperdays, i} = while {loopDate, timeperdays, i}, Date.diff(loopDate, todayDate) < 0 do
-      IO.inspect("ce langage est de la merde")
 
       minDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T00:00:00.000000Z")
       maxDate = NaiveDateTime.from_iso8601!(Date.to_string(loopDate)<>"T23:59:59.000000Z")
@@ -92,7 +92,7 @@ defmodule SrcWeb.ChartManagerController do
       IO.inspect(maxDate)
       # IO.inspect()
       day = ChartManager.get_daytime_data(user_id, minDate, maxDate)
-      IO.inspect(day)
+      #IO.inspect(day)
 
       total = calc_time_per_day(day, minDate, maxDate)
       {
@@ -139,6 +139,7 @@ defmodule SrcWeb.ChartManagerController do
 
 
   def time_per_days_scheduled(conn, %{"user_id"=>user_id, "days"=>days}) do
+    is_allowed(conn)
     timeperdays = loop_for_every_day(user_id, days)
 
     scheduled = scheduled_workingtime(user_id, days)
@@ -210,6 +211,17 @@ defmodule SrcWeb.ChartManagerController do
       end
     else
       {NaiveDateTime.diff(loopDate[:end], min), counter + 1}
+    end
+  end
+
+  def is_allowed(conn) do
+    test = get_req_header(conn, "authorization")
+    if Users.get_auth(String.slice("#{test}", 7..999)) != nil do
+      true
+    else
+      conn
+      |> put_status(:forbidden)
+      |> json(%{"error"=>"Not allowed"})
     end
   end
 
