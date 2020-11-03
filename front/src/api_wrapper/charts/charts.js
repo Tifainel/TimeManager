@@ -1,6 +1,9 @@
 import config from '../../config.json';
 import { getConnexionType } from '../../helpers/getConnexionType';
 import { setMobileLocalStorage } from '../../helpers/localStorage';
+import Cookies from 'js-cookie';
+
+const userToken = Cookies.get('token');
 
 export async function getDayNightChart(userId, days) {
   try {
@@ -8,6 +11,9 @@ export async function getDayNightChart(userId, days) {
       `${config.api_url}/chartmanager/daynightdata/${userId}/${days}`,
       {
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
       },
     );
     const res = await data.json();
@@ -27,6 +33,9 @@ export async function getTimePerDay(userId, days) {
       `${config.api_url}/chartmanager/timeperdays/${userId}/${days}`,
       {
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
       },
     );
     const res = await data.json();
@@ -46,6 +55,9 @@ export async function getWorkingTimeAndClocked(userId, days) {
       `${config.api_url}/chartmanager/timeperdays/${userId}/${days}/scheduled`,
       {
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
       },
     );
     const res = await data.json();

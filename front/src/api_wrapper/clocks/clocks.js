@@ -1,11 +1,17 @@
 import config from '../../config.json';
 import { setMobileLocalStorage } from '../../helpers/localStorage';
 import { getConnexionType } from '../../helpers/getConnexionType';
+import Cookies from 'js-cookie';
+
+const userToken = Cookies.get('token');
 
 export async function getLastClockbyUserId(userId) {
   try {
     const clock = await fetch(`${config.api_url}/clocks/${userId}/last`, {
       method: 'GET',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
     });
     const res = await clock.json();
     setMobileLocalStorage('clock', res);
@@ -24,6 +30,7 @@ export async function createClock(userId, data) {
       method: 'POST',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${userToken}`,
       },
       body: JSON.stringify({
         clock: {
