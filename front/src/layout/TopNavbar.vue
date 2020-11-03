@@ -90,6 +90,7 @@ export default {
     },
     handleLogout() {
       Cookies.remove('token');
+      window.localStorage.clear();
       this.$router.push('signup');
     },
     handleRedirect() {

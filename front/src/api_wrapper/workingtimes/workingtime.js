@@ -14,7 +14,7 @@ export async function getAllWorkingTimesByUserId(userId, start, end) {
     setMobileLocalStorage('workingTimes', res);
     return res;
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       return JSON.parse(window.localStorage.getItem('workingTimes'));
     }
     return { error: e };

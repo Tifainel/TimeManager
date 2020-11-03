@@ -11,7 +11,7 @@ export async function getLastClockbyUserId(userId) {
     setMobileLocalStorage('clock', res);
     return res;
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       return JSON.parse(window.localStorage.getItem('clock'));
     }
     return { error: e };
@@ -34,7 +34,7 @@ export async function createClock(userId, data) {
     });
     return { res: 'success' };
   } catch (e) {
-    if (getConnexionType === 'none') {
+    if (getConnexionType() === 'none') {
       let clock = JSON.parse(window.localStorage.getItem('clock'));
       clock.time = new Date().toISOString();
       clock.status = !clock.status;
