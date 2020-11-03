@@ -7,11 +7,13 @@ defmodule SrcWeb.TeamController do
   action_fallback SrcWeb.FallbackController
 
   def index(conn, _params) do
+    is_allowed(conn)
     teams = Users.list_teams()
     render(conn, "index.json", teams: teams)
   end
 
   def create(conn,%{"team"=>team_params}) do
+    is_allowed(conn)
     #IO.inspect(team_params)
     with {:ok, %Team{} = team} <- Users.create_team(team_params) do
       conn
@@ -22,6 +24,7 @@ defmodule SrcWeb.TeamController do
   end
 
   def get_all_by_user(conn, %{"user_id"=> user_id}) do
+    is_allowed(conn)
     teams = Users.get_team_by_user_id(user_id)
     conn
     |> put_status(:ok)
@@ -30,6 +33,7 @@ defmodule SrcWeb.TeamController do
 
 
   def get_team(conn, params) do
+    is_allowed(conn)
     team = Users.get_team_by_user_and_team_id(params)
     render(conn, "show.json", team: team)
   end
@@ -39,6 +43,7 @@ defmodule SrcWeb.TeamController do
   # end
 
   def get_member_teams(conn, %{"member_id"=>member_id}) do
+    is_allowed(conn)
     teams = Users.get_teams_by_member(member_id)
     conn
     |> put_status(:ok)
@@ -46,6 +51,7 @@ defmodule SrcWeb.TeamController do
   end
 
   def update(conn, %{"id" => id, "team" => team_params}) do
+    is_allowed(conn)
     team = Users.get_team!(id)
 
     with {:ok, %Team{} = team} <- Users.update_team(team, team_params) do
@@ -54,10 +60,22 @@ defmodule SrcWeb.TeamController do
   end
 
   def delete(conn, %{"id" => id}) do
+    is_allowed(conn)
     team = Users.get_team!(id)
 
     with {:ok, %Team{}} <- Users.delete_team(team) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  def is_allowed(conn) do
+    test = get_req_header(conn, "authorization")
+    if Users.get_auth(String.slice("#{test}", 7..999)) != nil do
+      true
+    else
+      conn
+      |> put_status(:forbidden)
+      |> json(%{"error"=>"Not allowed"})
     end
   end
 end

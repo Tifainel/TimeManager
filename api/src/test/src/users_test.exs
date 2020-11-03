@@ -181,4 +181,65 @@ defmodule Src.UsersTest do
       assert %Ecto.Changeset{} = Users.change_team(team)
     end
   end
+
+  describe "auths" do
+    alias Src.Users.Auth
+
+    @valid_attrs %{expire_date: "2010-04-17T14:00:00Z", token: "some token"}
+    @update_attrs %{expire_date: "2011-05-18T15:01:01Z", token: "some updated token"}
+    @invalid_attrs %{expire_date: nil, token: nil}
+
+    def auth_fixture(attrs \\ %{}) do
+      {:ok, auth} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Users.create_auth()
+
+      auth
+    end
+
+    test "list_auths/0 returns all auths" do
+      auth = auth_fixture()
+      assert Users.list_auths() == [auth]
+    end
+
+    test "get_auth!/1 returns the auth with given id" do
+      auth = auth_fixture()
+      assert Users.get_auth!(auth.id) == auth
+    end
+
+    test "create_auth/1 with valid data creates a auth" do
+      assert {:ok, %Auth{} = auth} = Users.create_auth(@valid_attrs)
+      assert auth.expire_date == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+      assert auth.token == "some token"
+    end
+
+    test "create_auth/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Users.create_auth(@invalid_attrs)
+    end
+
+    test "update_auth/2 with valid data updates the auth" do
+      auth = auth_fixture()
+      assert {:ok, %Auth{} = auth} = Users.update_auth(auth, @update_attrs)
+      assert auth.expire_date == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+      assert auth.token == "some updated token"
+    end
+
+    test "update_auth/2 with invalid data returns error changeset" do
+      auth = auth_fixture()
+      assert {:error, %Ecto.Changeset{}} = Users.update_auth(auth, @invalid_attrs)
+      assert auth == Users.get_auth!(auth.id)
+    end
+
+    test "delete_auth/1 deletes the auth" do
+      auth = auth_fixture()
+      assert {:ok, %Auth{}} = Users.delete_auth(auth)
+      assert_raise Ecto.NoResultsError, fn -> Users.get_auth!(auth.id) end
+    end
+
+    test "change_auth/1 returns a auth changeset" do
+      auth = auth_fixture()
+      assert %Ecto.Changeset{} = Users.change_auth(auth)
+    end
+  end
 end

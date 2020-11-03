@@ -3,12 +3,13 @@ defmodule SrcWeb.UserController do
 
   alias Src.Users
   alias Src.Users.User
+  alias Src.Users.Auth
 
   action_fallback SrcWeb.FallbackController
 
   def get_user_by_username_email(conn, params) do
     user = Users.get_user_by_email_and_username(params)
-
+    is_allowed(conn)
     if user !== nil do
       conn
       |> put_status(:ok)
@@ -35,6 +36,8 @@ defmodule SrcWeb.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Users.get_user!(id)
+
+    is_allowed(conn)
     render(conn, "show.json", user: user)
   end
 
@@ -55,6 +58,8 @@ defmodule SrcWeb.UserController do
       signer = Joken.Signer.create("HS256", "my secret")
       {:ok, claims} = Joken.generate_claims(token_config, %{"id"=> user[:id], "role"=>user[:role]})
       {:ok, jwt, claims} = Joken.encode_and_sign(claims, signer)
+
+      Users.set_auth(user[:id], jwt, 30)
       conn
       |> put_status(:ok)
       |> json(%{"token"=>jwt})
@@ -64,6 +69,7 @@ defmodule SrcWeb.UserController do
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
+    is_allowed(conn)
     user = Users.get_user!(id)
     current_password = Map.fetch!(user, :password)
     user_params = if current_password !== user_params["password"] do
@@ -79,10 +85,22 @@ defmodule SrcWeb.UserController do
   end
 
   def delete(conn, %{"id" => id}) do
+    is_allowed(conn)
     user = Users.get_user!(id)
 
     with {:ok, %User{}} <- Users.delete_user(user) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  def is_allowed(conn) do
+    test = get_req_header(conn, "authorization")
+    if Users.get_auth(String.slice("#{test}", 7..999)) != nil do
+      true
+    else
+      conn
+      |> put_status(:forbidden)
+      |> json(%{"error"=>"Not allowed"})
     end
   end
 end
