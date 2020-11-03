@@ -1,6 +1,6 @@
 module.exports = [
   {
-    title: "I don't know how to use the Time Maa-nager platform.",
+    title: "I don't know how to use the Time Manager platform.",
     content:
       "At the launching of the platform you received a mail with a PDF tutorial on how to use it. If you can't find it you can read it here : https://timemanager-epitech.herokuapp.com/tutorial.pdf",
   },
