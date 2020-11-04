@@ -32,34 +32,34 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import Raphael from "raphael/raphael";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import Raphael from 'raphael/raphael';
 global.Raphael = Raphael;
-import { getTimePerDay } from "../../api_wrapper/charts/charts";
-import { BarChart } from "vue-morris";
-import Card from "../Cards/Card";
-import { getConnexionType } from "../../helpers/getConnexionType";
+import { getTimePerDay } from '../../api_wrapper/charts/charts';
+import { BarChart } from 'vue-morris';
+import Card from '../Cards/Card';
+import { getConnexionType } from '../../helpers/getConnexionType';
 
 export default {
-  name: "BarCard",
+  name: 'BarCard',
   components: { BarChart, Card },
   props: {
-    selectedUserId: String
+    selectedUserId: String,
   },
   data() {
     return {
       nbDays: 7,
       barData: [],
-      userId: ""
+      userId: '',
     };
   },
 
   methods: {
     handleNbDaysChange() {
-      if (getConnexionType() === "none") {
+      if (getConnexionType() === 'none') {
         alert(
-          "Oops ! You must be connected to the Internet to use this feature"
+          'Oops ! You must be connected to the Internet to use this feature',
         );
         return;
       }
@@ -77,17 +77,17 @@ export default {
         this.available = true;
         this.changed = !this.changed;
       }
-    }
+    },
   },
   mounted() {
     if (!this.selectedUserId) {
-      const token = Cookies.get("token");
+      const token = Cookies.get('token');
       this.userId = jwt_decode(token).id;
     } else {
       this.userId = this.selectedUserId;
     }
     this.getData();
-  }
+  },
 };
 </script>
 <style scoped lang="scss">
