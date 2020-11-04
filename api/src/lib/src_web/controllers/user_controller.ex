@@ -72,7 +72,7 @@ defmodule SrcWeb.UserController do
     is_allowed(conn)
     user = Users.get_user!(id)
     current_password = Map.fetch!(user, :password)
-    user_params = if current_password !== user_params["password"] do
+    user_params = if user_params["password"] !== nil and current_password !== user_params["password"] do
       pwd = :crypto.hash(:md5, user_params["password"]) |> Base.encode16()
       Map.put(user_params, "password", pwd)
     else
