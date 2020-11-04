@@ -9,6 +9,7 @@
               :switchModal="switchModal"
               :add="false"
               :selectedId="selectedId"
+              :selectedUserId ="selectedUserId"
             ></add-working-time>
           </div>
         </div>

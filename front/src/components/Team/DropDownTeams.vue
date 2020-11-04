@@ -20,11 +20,15 @@
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
-import { getTeamsbyManagerId, modifyTeam } from "../../api_wrapper/teams/teams";
+import {
+  getAllTeams,
+  getTeamsbyManagerId,
+  modifyTeam
+} from "../../api_wrapper/teams/teams";
 import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getUserById } from "../../api_wrapper/users/users";
 import { getConnexionType } from "../../helpers/getConnexionType";
-import { setMobileLocalStorage } from '../../helpers/localStorage';
+import { setMobileLocalStorage } from "../../helpers/localStorage";
 
 export default {
   name: "DropDownTeams",
@@ -82,13 +86,19 @@ export default {
   async mounted() {
     const token = Cookies.get("token");
     this.userId = jwt_decode(token).id;
-    this.teams = await getTeamsbyManagerId(this.userId);
+    const role = jwt_decode(token).role;
+    if (role === 3) {
+      const res = await getAllTeams();
+      this.teams = res.data;
+    } else if (role === 2) {
+      this.teams = await getTeamsbyManagerId(this.userId);
+    }
     this.getMembersForTeams(this.teams);
     if (getConnexionType() === "none") {
       if (!!window.localStorage.getItem("selectedUser")) {
         this.selectedName = JSON.parse(
-          window.localStorage.getItem("selectedUser")).username
-        ;
+          window.localStorage.getItem("selectedUser")
+        ).username;
       } else {
         this.selectedName = "Me";
       }

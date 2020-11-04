@@ -46,6 +46,7 @@ import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import Card from 'src/components/Cards/Card.vue';
 import {
+  getAllTeams,
   getTeamsbyManagerId,
   modifyTeam,
   getOneTeam,
@@ -128,8 +129,14 @@ export default {
   async mounted() {
     const token = Cookies.get('token');
     this.userId = jwt_decode(token).id;
-    this.teams = await getTeamsbyManagerId(this.userId);
-  },
+    const role = jwt_decode(token).role;
+    if (role === 3) {
+      const res = await getAllTeams();
+      this.teams = res.data;
+    } else if (role === 2) {
+      this.teams = await getTeamsbyManagerId(this.userId);
+    }
+  }
 };
 </script>
 <style>
