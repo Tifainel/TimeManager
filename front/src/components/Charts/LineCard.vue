@@ -3,7 +3,7 @@
     <card class="content-card line-card">
       <template slot="header">
         <h4 class="card-title">
-          Alledged hours compared to worked hours
+          Scheduled hours compared to worked hours
         </h4>
       </template>
       <base-input
