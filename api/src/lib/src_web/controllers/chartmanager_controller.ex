@@ -3,6 +3,7 @@ defmodule SrcWeb.ChartManagerController do
 
   alias Src.ChartManager
   import While
+  alias Src.Users
 
   action_fallback SrcWeb.FallbackController
 
