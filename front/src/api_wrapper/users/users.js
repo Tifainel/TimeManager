@@ -24,6 +24,25 @@ export async function getUserById(userId) {
   }
 }
 
+export async function getAllUsers() {
+  try {
+    const user = await fetch(`${config.api_url}/users/all`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    const userRes = (await user.json()).data;
+    setMobileLocalStorage('allUsers', userRes);
+    return userRes;
+  } catch (e) {
+    if (getConnexionType() === 'none') {
+      return JSON.parse(window.localStorage.getItem('allUsers'));
+    }
+    return { error: e };
+  }
+}
+
 export async function getUserByEmailAndUsername(email, username) {
   try {
     const user = await fetch(

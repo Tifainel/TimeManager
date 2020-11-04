@@ -1,7 +1,12 @@
 <template>
   <div class="drop-down">
     <form>
-      <base-drop-down tag="div" :title="selectedName" id="select">
+      <base-drop-down
+        tag="div"
+        :title="selectedName"
+        id="select"
+        v-if="role === 2"
+      >
         <a class="dropdown-item" @click="setSelected()">Me</a>
         <div v-for="team in teams" :key="team.id" v-show="loaded">
           <p class="label">{{ team.name }}</p>
@@ -10,6 +15,19 @@
               {{ member.username }}
             </a>
           </div>
+        </div>
+      </base-drop-down>
+      <base-drop-down
+        tag="div"
+        :title="selectedName"
+        id="select"
+        v-if="role === 3"
+      >
+        <a class="dropdown-item" @click="setSelected()">Me</a>
+        <div v-for="user in users" :key="user.id">
+          <a class="dropdown-item" @click="setSelected(user)">
+            {{ user.username }}
+          </a>
         </div>
       </base-drop-down>
       <div class="clearfix"></div>
@@ -25,6 +43,7 @@ import {
   getTeamsbyManagerId,
   modifyTeam
 } from "../../api_wrapper/teams/teams";
+import { getAllUsers } from "../../api_wrapper/users/users";
 import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getUserById } from "../../api_wrapper/users/users";
 import { getConnexionType } from "../../helpers/getConnexionType";
@@ -41,7 +60,9 @@ export default {
       userId: "",
       teams: "",
       selectedName: "Me",
-      loaded: false
+      loaded: false,
+      users: [],
+      role: ""
     };
   },
   methods: {
@@ -86,11 +107,10 @@ export default {
   async mounted() {
     const token = Cookies.get("token");
     this.userId = jwt_decode(token).id;
-    const role = jwt_decode(token).role;
-    if (role === 3) {
-      const res = await getAllTeams();
-      this.teams = res.data;
-    } else if (role === 2) {
+    this.role = jwt_decode(token).role;
+    if (this.role === 3) {
+      this.users = await getAllUsers();
+    } else if (this.role === 2) {
       this.teams = await getTeamsbyManagerId(this.userId);
     }
     this.getMembersForTeams(this.teams);
