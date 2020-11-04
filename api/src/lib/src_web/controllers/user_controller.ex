@@ -7,6 +7,13 @@ defmodule SrcWeb.UserController do
 
   action_fallback SrcWeb.FallbackController
 
+  def index(conn, _params) do
+    is_allowed(conn)
+    users = Users.list_users()
+    render(conn, "index.json", users: users)
+
+  end
+
   def get_user_by_username_email(conn, params) do
     user = Users.get_user_by_email_and_username(params)
     is_allowed(conn)

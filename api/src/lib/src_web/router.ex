@@ -85,6 +85,9 @@ defmodule SrcWeb.Router do
     # USERS
     # -------------
 
+    #get all
+    get "/users/all", UserController, :index
+
     #get all users by email and username ?email=XXXX&username=YYY
     get "/users", UserController, :get_user_by_username_email
 
