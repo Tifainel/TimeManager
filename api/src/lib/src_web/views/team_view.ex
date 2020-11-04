@@ -14,7 +14,8 @@ defmodule SrcWeb.TeamView do
     %{
       id: team.id,
       members: team.members,
-      user_id: team.user_id
+      user_id: team.user_id,
+      name: team.name
     }
   end
 end
