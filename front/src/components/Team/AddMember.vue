@@ -19,7 +19,12 @@
         v-model="username"
       >
       </base-input>
-      <base-input type="email" label="Email" placeholder="email" v-model="email">
+      <base-input
+        type="email"
+        label="Email"
+        placeholder="email"
+        v-model="email"
+      >
       </base-input>
       <p class="form-error text-center">{{ formError }}</p>
       <div class="text-center">
@@ -37,43 +42,43 @@
   </card>
 </template>
 <script>
-import Cookies from "js-cookie";
-import jwt_decode from "jwt-decode";
-import Card from "src/components/Cards/Card.vue";
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
+import Card from 'src/components/Cards/Card.vue';
 import {
   getTeamsbyManagerId,
   modifyTeam,
-  getOneTeam
-} from "../../api_wrapper/teams/teams";
-import BaseDropDown from "src/components/BaseDropdown.vue";
-import { getUserByEmailAndUsername } from "../../api_wrapper/users/users";
-import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
-import { getConnexionType } from "../../helpers/getConnexionType";
+  getOneTeam,
+} from '../../api_wrapper/teams/teams';
+import BaseDropDown from 'src/components/BaseDropdown.vue';
+import { getUserByEmailAndUsername } from '../../api_wrapper/users/users';
+import TeamMemberCard from 'src/components/Cards/TeamMemberCard.vue';
+import { getConnexionType } from '../../helpers/getConnexionType';
 
 export default {
-  name: "AddMember",
+  name: 'AddMember',
   components: { Card, BaseDropDown, TeamMemberCard },
   props: {
-    affectChange: Function
+    affectChange: Function,
   },
   data() {
     return {
-      userId: "",
-      teams: "",
+      userId: '',
+      teams: '',
       selectedTeam: {
-        name: "Select a team",
-        id: "",
-        members: []
+        name: 'Select a team',
+        id: '',
+        members: [],
       },
       user: {
-        id: "",
-        username: "",
-        email: ""
+        id: '',
+        username: '',
+        email: '',
       },
-      email: "",
-      username: "",
-      formError: "",
-      formSuccess: ""
+      email: '',
+      username: '',
+      formError: '',
+      formSuccess: '',
     };
   },
   methods: {
@@ -85,29 +90,29 @@ export default {
     },
 
     async addMember() {
-      if (getConnexionType() === "none") {
+      if (getConnexionType() === 'none') {
         alert(
-          "Oops ! You must be connected to the Internet to use this feature"
+          'Oops ! You must be connected to the Internet to use this feature',
         );
         return;
       }
       if (this.selectedTeam.id && this.email && this.username) {
         this.user = await getUserByEmailAndUsername(this.email, this.username);
-        if (this.user.error) {
-          this.formError = "This user could not be found";
+        if (this.user.error || this.user.Error) {
+          this.formError = 'This user could not be found';
         } else {
           if (this.checkForUserInTeam(this.user.id)) {
             this.selectedTeam.members.push(this.user.id);
             modifyTeam(this.selectedTeam.id, this.selectedTeam);
-            this.formError = "";
+            this.formError = '';
             this.formSuccess = `This user was added to ${this.selectedTeam.name}`;
             this.affectChange();
           } else {
-            this.formError = "This user is already in this team";
+            this.formError = 'This user is already in this team';
           }
         }
       } else {
-        this.formError = "All fields must be filled";
+        this.formError = 'All fields must be filled';
       }
     },
     checkForUserInTeam(userId) {
@@ -117,14 +122,14 @@ export default {
         }
       }
       return true;
-    }
+    },
   },
 
   async mounted() {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     this.userId = jwt_decode(token).id;
     this.teams = await getTeamsbyManagerId(this.userId);
-  }
+  },
 };
 </script>
 <style>
