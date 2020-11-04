@@ -29,7 +29,7 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import Card from "src/components/Cards/Card.vue";
 import TeamMemberCard from "src/components/Cards/TeamMemberCard.vue";
-import { getTeamsbyManagerId, modifyTeam } from "../../api_wrapper/teams/teams";
+import { getAllTeams, getTeamsbyManagerId, modifyTeam } from "../../api_wrapper/teams/teams";
 import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getUserById } from "../../api_wrapper/users/users";
 import { getConnexionType } from "../../helpers/getConnexionType";
@@ -66,8 +66,10 @@ export default {
       }
     },
     deleteMemberFromTeam(userId) {
-      if (getConnexionType() === 'none') {
-        alert("Oops ! You must be connected to the Internet to use this feature");
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
         return;
       }
       for (const member in this.selectedTeam.members) {
@@ -90,7 +92,13 @@ export default {
   async mounted() {
     const token = Cookies.get("token");
     this.userId = jwt_decode(token).id;
-    this.teams = await getTeamsbyManagerId(this.userId);
+    const role = jwt_decode(token).role;
+    if (role === 3) {
+      const res = await getAllTeams();
+      this.teams = res.data;
+    } else if (role === 2) {
+      this.teams = await getTeamsbyManagerId(this.userId);
+    }
   }
 };
 </script>

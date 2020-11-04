@@ -52,6 +52,20 @@ export async function getTeamsByUserId(userId) {
   }
 }
 
+export async function getAllTeams() {
+  try {
+    const teams = await fetch(`${config.api_url}/teams`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    return await teams.json();
+  } catch (e) {
+    return { error: e };
+  }
+}
+
 export async function createTeam(data) {
   try {
     const team = await fetch(`${config.api_url}/teams/`, {

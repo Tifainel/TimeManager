@@ -28,44 +28,47 @@
   </card>
 </template>
 <script>
-import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
-import Card from 'src/components/Cards/Card.vue';
-import { deleteTeam, getTeamsbyManagerId } from '../../api_wrapper/teams/teams';
-import BaseDropDown from 'src/components/BaseDropdown.vue';
+import Cookies from "js-cookie";
+import jwt_decode from "jwt-decode";
+import Card from "src/components/Cards/Card.vue";
+import { getAllTeams, deleteTeam, getTeamsbyManagerId } from "../../api_wrapper/teams/teams";
+import BaseDropDown from "src/components/BaseDropdown.vue";
 import { getConnexionType } from "../../helpers/getConnexionType";
 
 export default {
-  name: 'DeleteTeam',
+  name: "DeleteTeam",
   components: { Card, BaseDropDown },
   props: {
     affectChange: Function
   },
   data() {
     return {
-      userId: '',
+      userId: "",
+      role: "",
       teams: [],
       selectedTeam: {
-        name: 'Select a team',
-        id: '',
-        members: [],
+        name: "Select a team",
+        id: "",
+        members: []
       },
-      formSuccess: '',
-      formError: '',
+      formSuccess: "",
+      formError: ""
     };
   },
   methods: {
     async deleteTeam() {
-      if (getConnexionType() === 'none') {
-        alert("Oops ! You must be connected to the Internet to use this feature");
+      if (getConnexionType() === "none") {
+        alert(
+          "Oops ! You must be connected to the Internet to use this feature"
+        );
         return;
       }
       deleteTeam(this.selectedTeam.id);
       this.formSuccess = `The team ${this.selectedTeam.name} has been deleted`;
       this.selectedTeam = {
-        name: 'Select a team',
-        id: '',
-        members: [],
+        name: "Select a team",
+        id: "",
+        members: []
       };
       this.refresh();
       this.affectChange();
@@ -74,15 +77,21 @@ export default {
       this.selectedTeam = team;
     },
     async refresh() {
-      this.teams = await getTeamsbyManagerId(this.userId);
-    },
+      if (this.role === 3) {
+        const res = await getAllTeams();
+        this.teams = res.data;
+      } else if (this.role === 2) {
+        this.teams = await getTeamsbyManagerId(this.userId);
+      }
+    }
   },
 
   mounted() {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     this.userId = jwt_decode(token).id;
+    this.role = jwt_decode(token).role;
     this.refresh();
-  },
+  }
 };
 </script>
 <style>
